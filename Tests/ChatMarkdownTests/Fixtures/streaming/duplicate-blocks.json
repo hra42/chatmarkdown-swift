@@ -1,0 +1,37 @@
+{
+  "description" : "Two identical thematic-break (---) blocks separated by content. Validates that occurrenceIndex disambiguates equal-hash blocks so prefix stability holds across edits.",
+  "steps" : [
+    {
+      "blockIDs" : [
+        "000000006c0b4733",
+        "00000000ce616fdb",
+        "000000009b692c11",
+        "00000000c37225ba"
+      ],
+      "input" : "intro\n\n---\n\nmiddle\n\n---",
+      "stableBlockCount" : 0
+    },
+    {
+      "blockIDs" : [
+        "000000006c0b4733",
+        "00000000ce616fdb",
+        "000000009b692c11",
+        "00000000c37225ba",
+        "000000004aac8a16"
+      ],
+      "input" : "intro\n\n---\n\nmiddle\n\n---\n\noutro",
+      "stableBlockCount" : 4
+    },
+    {
+      "blockIDs" : [
+        "000000006c0b4733",
+        "00000000ce616fdb",
+        "000000009b692c11",
+        "00000000c37225ba",
+        "000000009ae12aa6"
+      ],
+      "input" : "intro\n\n---\n\nmiddle\n\n---\n\noutro paragraph",
+      "stableBlockCount" : 4
+    }
+  ]
+}
