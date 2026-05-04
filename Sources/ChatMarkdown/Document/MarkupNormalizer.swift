@@ -2,11 +2,19 @@ import Foundation
 import Markdown
 
 struct MarkupNormalizer {
-    static func blocks(from document: Markdown.Document) -> [ChatMarkdownBlock] {
+    static func blocks(from document: Markdown.Document, source: String) -> [ChatMarkdownBlock] {
         var result: [ChatMarkdownBlock] = []
         for child in document.blockChildren {
             if let b = block(from: child) {
                 result.append(b)
+            }
+        }
+        if FenceParityScanner.endsInsideOpenFence(source) {
+            for i in stride(from: result.count - 1, through: 0, by: -1) {
+                if case let .codeBlock(language, code, _) = result[i] {
+                    result[i] = .codeBlock(language: language, code: code, isClosed: false)
+                    break
+                }
             }
         }
         return result

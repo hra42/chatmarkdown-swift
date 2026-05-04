@@ -6,7 +6,7 @@ public struct ChatMarkdownDocument: Hashable, Sendable, Codable {
 
     public init(markdown: String) {
         let doc = Markdown.Document(parsing: markdown)
-        self.blocks = MarkupNormalizer.blocks(from: doc)
+        self.blocks = MarkupNormalizer.blocks(from: doc, source: markdown)
     }
 
     public init(blocks: [ChatMarkdownBlock]) {
