@@ -23,13 +23,60 @@ Experimental. No semantic versioning, no release tags, no support promise. `main
 )
 ```
 
-## Phase 1 status
+## Status
 
-Phase 1 ships only the parser and block model — no rendering yet. Rendering arrives in Phase 2.
+Phase 2 (current): SwiftUI rendering of all supported features. Streaming-aware view-identity reuse arrives in Phase 3.
+
+## Usage
 
 ```swift
+import SwiftUI
 import ChatMarkdown
 
+struct MessageView: View {
+    let markdown: String
+    let role: MessageRole
+
+    var body: some View {
+        ChatMarkdownView(markdown, role: role)
+    }
+}
+```
+
+### Theming
+
+Themes are value-type structs. Built-in presets: `.assistant`, `.user`, `.pdfLight`. Pass a custom theme via `.chatMarkdownTheme(_:)`.
+
+```swift
+var theme = ChatMarkdownTheme.assistant
+theme.linkColor = .pink
+theme.linksUnderlined = false
+
+ChatMarkdownView(markdown)
+    .chatMarkdownTheme(theme)
+```
+
+### Custom code-block style
+
+```swift
+struct PlainCodeBlockStyle: ChatMarkdownCodeBlockStyle {
+    func makeBody(configuration: ChatMarkdownCodeBlockConfiguration) -> some View {
+        Text(configuration.code)
+            .font(.system(.body, design: .monospaced))
+            .padding()
+            .background(.gray.opacity(0.15))
+    }
+}
+
+ChatMarkdownView(markdown)
+    .chatMarkdownCodeBlockStyle(PlainCodeBlockStyle())
+```
+
+### Parsing only
+
+If you only need the AST (for example, to drive a custom renderer), use `ChatMarkdownDocument` directly:
+
+```swift
 let doc = ChatMarkdownDocument(markdown: "# Hello\n\nWorld")
 for block in doc.blocks {
     print(block.contentHash)
