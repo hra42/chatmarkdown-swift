@@ -1,0 +1,28 @@
+{
+  "description" : "A code fence opens mid-stream and later closes. The leading prose paragraph stays stable across all three steps; the trailing code block changes identity when the closing fence arrives (isClosed flips, contentHash changes).",
+  "steps" : [
+    {
+      "blockIDs" : [
+        "00000000ea7282fd"
+      ],
+      "input" : "Here is a small Python example:",
+      "stableBlockCount" : 0
+    },
+    {
+      "blockIDs" : [
+        "00000000ea7282fd",
+        "00000000e00903a2"
+      ],
+      "input" : "Here is a small Python example:\n\n```python\ndef greet(name):\n    return f\"Hello, {name}\"",
+      "stableBlockCount" : 1
+    },
+    {
+      "blockIDs" : [
+        "00000000ea7282fd",
+        "0000000068ff419a"
+      ],
+      "input" : "Here is a small Python example:\n\n```python\ndef greet(name):\n    return f\"Hello, {name}\"\n```",
+      "stableBlockCount" : 1
+    }
+  ]
+}
