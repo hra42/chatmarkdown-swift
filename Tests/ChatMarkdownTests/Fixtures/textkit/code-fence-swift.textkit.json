@@ -1,0 +1,14 @@
+{
+  "attachmentSlots" : [
+    {
+      "kind" : "codeBlock",
+      "length" : 1,
+      "location" : 26
+    }
+  ],
+  "blockKinds" : [
+    "paragraph",
+    "codeBlock"
+  ],
+  "length" : 97
+}

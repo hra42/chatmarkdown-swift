@@ -1,0 +1,12 @@
+{
+  "attachmentSlots" : [
+
+  ],
+  "blockKinds" : [
+    "paragraph",
+    "blockquote",
+    "horizontalRule",
+    "paragraph"
+  ],
+  "length" : 99
+}
