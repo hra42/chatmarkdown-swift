@@ -1,0 +1,16 @@
+[
+  {
+    "inlines" : [
+      {
+        "kind" : "text",
+        "value" : "An untagged fence, common when the model isn’t sure of the language:"
+      }
+    ],
+    "kind" : "paragraph"
+  },
+  {
+    "code" : "some plain\nmulti-line\ncontent\n",
+    "isClosed" : true,
+    "kind" : "codeBlock"
+  }
+]

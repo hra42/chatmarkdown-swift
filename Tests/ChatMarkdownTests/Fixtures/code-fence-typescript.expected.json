@@ -1,0 +1,8 @@
+[
+  {
+    "code" : "interface User {\n  id: string;\n  name: string;\n  email?: string;\n}\n\nconst greet = (user: User): string => {\n  return `Hello, ${user.name}`;\n};\n",
+    "isClosed" : true,
+    "kind" : "codeBlock",
+    "language" : "typescript"
+  }
+]

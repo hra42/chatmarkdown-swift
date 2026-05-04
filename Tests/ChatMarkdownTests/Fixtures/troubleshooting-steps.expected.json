@@ -1,0 +1,112 @@
+[
+  {
+    "inlines" : [
+      {
+        "kind" : "text",
+        "value" : "Fixing “module not found” errors"
+      }
+    ],
+    "kind" : "heading",
+    "level" : 3
+  },
+  {
+    "items" : [
+      [
+        {
+          "inlines" : [
+            {
+              "kind" : "text",
+              "value" : "Clean the build folder (Cmd+Shift+K) to clear stale module caches."
+            }
+          ],
+          "kind" : "paragraph"
+        }
+      ],
+      [
+        {
+          "inlines" : [
+            {
+              "kind" : "text",
+              "value" : "Reset Swift Package Manager state:"
+            }
+          ],
+          "kind" : "paragraph"
+        },
+        {
+          "code" : "rm -rf .build .swiftpm\nswift package reset\n",
+          "isClosed" : true,
+          "kind" : "codeBlock",
+          "language" : "bash"
+        }
+      ],
+      [
+        {
+          "inlines" : [
+            {
+              "kind" : "text",
+              "value" : "Resolve dependencies again:"
+            }
+          ],
+          "kind" : "paragraph"
+        },
+        {
+          "code" : "swift package resolve\n",
+          "isClosed" : true,
+          "kind" : "codeBlock",
+          "language" : "bash"
+        }
+      ],
+      [
+        {
+          "inlines" : [
+            {
+              "kind" : "text",
+              "value" : "Reopen the project in Xcode and rebuild."
+            }
+          ],
+          "kind" : "paragraph"
+        }
+      ]
+    ],
+    "kind" : "orderedList",
+    "start" : 1
+  },
+  {
+    "inlines" : [
+      {
+        "kind" : "text",
+        "value" : "If the error persists, check that the dependency is listed in "
+      },
+      {
+        "children" : [
+          {
+            "kind" : "text",
+            "value" : "both"
+          }
+        ],
+        "kind" : "bold"
+      },
+      {
+        "kind" : "text",
+        "value" : " "
+      },
+      {
+        "kind" : "code",
+        "value" : "Package.swift"
+      },
+      {
+        "kind" : "text",
+        "value" : " and the target’s "
+      },
+      {
+        "kind" : "code",
+        "value" : "dependencies"
+      },
+      {
+        "kind" : "text",
+        "value" : " array."
+      }
+    ],
+    "kind" : "paragraph"
+  }
+]

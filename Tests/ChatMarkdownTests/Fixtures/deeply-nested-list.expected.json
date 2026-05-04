@@ -1,0 +1,175 @@
+[
+  {
+    "items" : [
+      [
+        {
+          "inlines" : [
+            {
+              "kind" : "text",
+              "value" : "Frontend"
+            }
+          ],
+          "kind" : "paragraph"
+        },
+        {
+          "items" : [
+            [
+              {
+                "inlines" : [
+                  {
+                    "kind" : "text",
+                    "value" : "Web"
+                  }
+                ],
+                "kind" : "paragraph"
+              },
+              {
+                "items" : [
+                  [
+                    {
+                      "inlines" : [
+                        {
+                          "kind" : "text",
+                          "value" : "React"
+                        }
+                      ],
+                      "kind" : "paragraph"
+                    }
+                  ],
+                  [
+                    {
+                      "inlines" : [
+                        {
+                          "kind" : "text",
+                          "value" : "SvelteKit"
+                        }
+                      ],
+                      "kind" : "paragraph"
+                    }
+                  ]
+                ],
+                "kind" : "unorderedList"
+              }
+            ],
+            [
+              {
+                "inlines" : [
+                  {
+                    "kind" : "text",
+                    "value" : "Mobile"
+                  }
+                ],
+                "kind" : "paragraph"
+              },
+              {
+                "items" : [
+                  [
+                    {
+                      "inlines" : [
+                        {
+                          "kind" : "text",
+                          "value" : "SwiftUI"
+                        }
+                      ],
+                      "kind" : "paragraph"
+                    }
+                  ],
+                  [
+                    {
+                      "inlines" : [
+                        {
+                          "kind" : "text",
+                          "value" : "Jetpack Compose"
+                        }
+                      ],
+                      "kind" : "paragraph"
+                    }
+                  ]
+                ],
+                "kind" : "unorderedList"
+              }
+            ]
+          ],
+          "kind" : "unorderedList"
+        }
+      ],
+      [
+        {
+          "inlines" : [
+            {
+              "kind" : "text",
+              "value" : "Backend"
+            }
+          ],
+          "kind" : "paragraph"
+        },
+        {
+          "items" : [
+            [
+              {
+                "inlines" : [
+                  {
+                    "kind" : "text",
+                    "value" : "Go"
+                  }
+                ],
+                "kind" : "paragraph"
+              }
+            ],
+            [
+              {
+                "inlines" : [
+                  {
+                    "kind" : "text",
+                    "value" : "Rust"
+                  }
+                ],
+                "kind" : "paragraph"
+              }
+            ]
+          ],
+          "kind" : "unorderedList"
+        }
+      ],
+      [
+        {
+          "inlines" : [
+            {
+              "kind" : "text",
+              "value" : "Infrastructure"
+            }
+          ],
+          "kind" : "paragraph"
+        },
+        {
+          "items" : [
+            [
+              {
+                "inlines" : [
+                  {
+                    "kind" : "text",
+                    "value" : "Kubernetes"
+                  }
+                ],
+                "kind" : "paragraph"
+              }
+            ],
+            [
+              {
+                "inlines" : [
+                  {
+                    "kind" : "text",
+                    "value" : "Terraform"
+                  }
+                ],
+                "kind" : "paragraph"
+              }
+            ]
+          ],
+          "kind" : "unorderedList"
+        }
+      ]
+    ],
+    "kind" : "unorderedList"
+  }
+]

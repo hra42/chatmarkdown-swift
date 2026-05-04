@@ -1,0 +1,13 @@
+- Frontend
+  - Web
+    - React
+    - SvelteKit
+  - Mobile
+    - SwiftUI
+    - Jetpack Compose
+- Backend
+  - Go
+  - Rust
+- Infrastructure
+  - Kubernetes
+  - Terraform

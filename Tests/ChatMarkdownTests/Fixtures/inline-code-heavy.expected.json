@@ -1,0 +1,67 @@
+[
+  {
+    "inlines" : [
+      {
+        "kind" : "text",
+        "value" : "Use "
+      },
+      {
+        "kind" : "code",
+        "value" : "URLSession.shared.data(for:)"
+      },
+      {
+        "kind" : "text",
+        "value" : " together with "
+      },
+      {
+        "kind" : "code",
+        "value" : "try await"
+      },
+      {
+        "kind" : "text",
+        "value" : " to perform an async network request. The result is a tuple of "
+      },
+      {
+        "kind" : "code",
+        "value" : "(Data, URLResponse)"
+      },
+      {
+        "kind" : "text",
+        "value" : ". Decode the body with "
+      },
+      {
+        "kind" : "code",
+        "value" : "JSONDecoder().decode(MyType.self, from: data)"
+      },
+      {
+        "kind" : "text",
+        "value" : ", and inspect "
+      },
+      {
+        "kind" : "code",
+        "value" : "response"
+      },
+      {
+        "kind" : "text",
+        "value" : " (cast to "
+      },
+      {
+        "kind" : "code",
+        "value" : "HTTPURLResponse"
+      },
+      {
+        "kind" : "text",
+        "value" : ") for the "
+      },
+      {
+        "kind" : "code",
+        "value" : "statusCode"
+      },
+      {
+        "kind" : "text",
+        "value" : "."
+      }
+    ],
+    "kind" : "paragraph"
+  }
+]

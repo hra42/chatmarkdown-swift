@@ -1,0 +1,28 @@
+[
+  {
+    "inlines" : [
+      {
+        "kind" : "text",
+        "value" : "Mid-stream snapshot — the model has emitted an opening "
+      },
+      {
+        "kind" : "code",
+        "value" : "**"
+      },
+      {
+        "kind" : "text",
+        "value" : " but no closing yet:"
+      }
+    ],
+    "kind" : "paragraph"
+  },
+  {
+    "inlines" : [
+      {
+        "kind" : "text",
+        "value" : "The most important property is **isolation"
+      }
+    ],
+    "kind" : "paragraph"
+  }
+]

@@ -1,0 +1,17 @@
+[
+  {
+    "inlines" : [
+      {
+        "kind" : "text",
+        "value" : "Run these commands to set up the project:"
+      }
+    ],
+    "kind" : "paragraph"
+  },
+  {
+    "code" : "git clone https:\/\/github.com\/example\/repo.git\ncd repo\nswift build\nswift test\n",
+    "isClosed" : true,
+    "kind" : "codeBlock",
+    "language" : "bash"
+  }
+]

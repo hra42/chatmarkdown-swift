@@ -1,0 +1,169 @@
+[
+  {
+    "alignments" : [
+      "none",
+      "none",
+      "none",
+      "none"
+    ],
+    "headers" : [
+      [
+        {
+          "kind" : "text",
+          "value" : "Model"
+        }
+      ],
+      [
+        {
+          "kind" : "text",
+          "value" : "Context"
+        }
+      ],
+      [
+        {
+          "kind" : "text",
+          "value" : "Cost \/ 1M in"
+        }
+      ],
+      [
+        {
+          "kind" : "text",
+          "value" : "Cost \/ 1M out"
+        }
+      ]
+    ],
+    "kind" : "table",
+    "rows" : [
+      [
+        [
+          {
+            "kind" : "text",
+            "value" : "Opus 4.7"
+          }
+        ],
+        [
+          {
+            "kind" : "text",
+            "value" : "1M"
+          }
+        ],
+        [
+          {
+            "kind" : "text",
+            "value" : "$15"
+          }
+        ],
+        [
+          {
+            "kind" : "text",
+            "value" : "$75"
+          }
+        ]
+      ],
+      [
+        [
+          {
+            "kind" : "text",
+            "value" : "Sonnet 4.6"
+          }
+        ],
+        [
+          {
+            "kind" : "text",
+            "value" : "200k"
+          }
+        ],
+        [
+          {
+            "kind" : "text",
+            "value" : "$3"
+          }
+        ],
+        [
+          {
+            "kind" : "text",
+            "value" : "$15"
+          }
+        ]
+      ],
+      [
+        [
+          {
+            "kind" : "text",
+            "value" : "Haiku 4.5"
+          }
+        ],
+        [
+          {
+            "kind" : "text",
+            "value" : "200k"
+          }
+        ],
+        [
+          {
+            "kind" : "text",
+            "value" : "$1"
+          }
+        ],
+        [
+          {
+            "kind" : "text",
+            "value" : "$5"
+          }
+        ]
+      ],
+      [
+        [
+          {
+            "kind" : "text",
+            "value" : "Opus 4.6"
+          }
+        ],
+        [
+          {
+            "kind" : "text",
+            "value" : "200k"
+          }
+        ],
+        [
+          {
+            "kind" : "text",
+            "value" : "$15"
+          }
+        ],
+        [
+          {
+            "kind" : "text",
+            "value" : "$75"
+          }
+        ]
+      ],
+      [
+        [
+          {
+            "kind" : "text",
+            "value" : "Sonnet 4.5"
+          }
+        ],
+        [
+          {
+            "kind" : "text",
+            "value" : "200k"
+          }
+        ],
+        [
+          {
+            "kind" : "text",
+            "value" : "$3"
+          }
+        ],
+        [
+          {
+            "kind" : "text",
+            "value" : "$15"
+          }
+        ]
+      ]
+    ]
+  }
+]

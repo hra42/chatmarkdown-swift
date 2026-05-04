@@ -1,0 +1,127 @@
+[
+  {
+    "inlines" : [
+      {
+        "kind" : "text",
+        "value" : "What’s the difference between "
+      },
+      {
+        "kind" : "code",
+        "value" : "let"
+      },
+      {
+        "kind" : "text",
+        "value" : " and "
+      },
+      {
+        "kind" : "code",
+        "value" : "var"
+      },
+      {
+        "kind" : "text",
+        "value" : "?"
+      }
+    ],
+    "kind" : "heading",
+    "level" : 2
+  },
+  {
+    "inlines" : [
+      {
+        "kind" : "code",
+        "value" : "let"
+      },
+      {
+        "kind" : "text",
+        "value" : " declares a "
+      },
+      {
+        "children" : [
+          {
+            "kind" : "text",
+            "value" : "constant"
+          }
+        ],
+        "kind" : "italic"
+      },
+      {
+        "kind" : "text",
+        "value" : " — once assigned, the binding cannot point at a different value."
+      }
+    ],
+    "kind" : "paragraph"
+  },
+  {
+    "inlines" : [
+      {
+        "kind" : "code",
+        "value" : "var"
+      },
+      {
+        "kind" : "text",
+        "value" : " declares a "
+      },
+      {
+        "children" : [
+          {
+            "kind" : "text",
+            "value" : "variable"
+          }
+        ],
+        "kind" : "italic"
+      },
+      {
+        "kind" : "text",
+        "value" : " — the binding can be reassigned."
+      }
+    ],
+    "kind" : "paragraph"
+  },
+  {
+    "code" : "let pi = 3.14159\nvar counter = 0\ncounter += 1\n",
+    "isClosed" : true,
+    "kind" : "codeBlock",
+    "language" : "swift"
+  },
+  {
+    "inlines" : [
+      {
+        "kind" : "text",
+        "value" : "Use "
+      },
+      {
+        "kind" : "code",
+        "value" : "let"
+      },
+      {
+        "kind" : "text",
+        "value" : " by default; only reach for "
+      },
+      {
+        "kind" : "code",
+        "value" : "var"
+      },
+      {
+        "kind" : "text",
+        "value" : " when you actually need mutation. Xcode will warn you if you declare a "
+      },
+      {
+        "kind" : "code",
+        "value" : "var"
+      },
+      {
+        "kind" : "text",
+        "value" : " that is never reassigned, suggesting you change it to "
+      },
+      {
+        "kind" : "code",
+        "value" : "let"
+      },
+      {
+        "kind" : "text",
+        "value" : "."
+      }
+    ],
+    "kind" : "paragraph"
+  }
+]

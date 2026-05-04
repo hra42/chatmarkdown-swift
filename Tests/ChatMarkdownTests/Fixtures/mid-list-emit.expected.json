@@ -1,0 +1,69 @@
+[
+  {
+    "inlines" : [
+      {
+        "kind" : "text",
+        "value" : "Steps to reproduce:"
+      }
+    ],
+    "kind" : "paragraph"
+  },
+  {
+    "items" : [
+      [
+        {
+          "inlines" : [
+            {
+              "kind" : "text",
+              "value" : "Open the project in Xcode 16 or later."
+            }
+          ],
+          "kind" : "paragraph"
+        }
+      ],
+      [
+        {
+          "inlines" : [
+            {
+              "kind" : "text",
+              "value" : "Select the "
+            },
+            {
+              "kind" : "code",
+              "value" : "ChatMarkdown"
+            },
+            {
+              "kind" : "text",
+              "value" : " scheme."
+            }
+          ],
+          "kind" : "paragraph"
+        }
+      ],
+      [
+        {
+          "inlines" : [
+            {
+              "kind" : "text",
+              "value" : "Press Cmd+U to run the test suite."
+            }
+          ],
+          "kind" : "paragraph"
+        }
+      ],
+      [
+        {
+          "inlines" : [
+            {
+              "kind" : "text",
+              "value" : "Wait for the first failure to surf"
+            }
+          ],
+          "kind" : "paragraph"
+        }
+      ]
+    ],
+    "kind" : "orderedList",
+    "start" : 1
+  }
+]

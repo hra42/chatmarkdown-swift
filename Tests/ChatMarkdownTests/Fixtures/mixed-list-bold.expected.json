@@ -1,0 +1,96 @@
+[
+  {
+    "inlines" : [
+      {
+        "kind" : "text",
+        "value" : "Common Swift concurrency primitives:"
+      }
+    ],
+    "kind" : "paragraph"
+  },
+  {
+    "items" : [
+      [
+        {
+          "inlines" : [
+            {
+              "children" : [
+                {
+                  "kind" : "code",
+                  "value" : "Task"
+                }
+              ],
+              "kind" : "bold"
+            },
+            {
+              "kind" : "text",
+              "value" : " — schedules an asynchronous unit of work."
+            }
+          ],
+          "kind" : "paragraph"
+        }
+      ],
+      [
+        {
+          "inlines" : [
+            {
+              "children" : [
+                {
+                  "kind" : "code",
+                  "value" : "async let"
+                }
+              ],
+              "kind" : "bold"
+            },
+            {
+              "kind" : "text",
+              "value" : " — runs child tasks in parallel and awaits them later."
+            }
+          ],
+          "kind" : "paragraph"
+        }
+      ],
+      [
+        {
+          "inlines" : [
+            {
+              "children" : [
+                {
+                  "kind" : "code",
+                  "value" : "actor"
+                }
+              ],
+              "kind" : "bold"
+            },
+            {
+              "kind" : "text",
+              "value" : " — protects mutable state from data races by serialising access."
+            }
+          ],
+          "kind" : "paragraph"
+        }
+      ],
+      [
+        {
+          "inlines" : [
+            {
+              "children" : [
+                {
+                  "kind" : "code",
+                  "value" : "@MainActor"
+                }
+              ],
+              "kind" : "bold"
+            },
+            {
+              "kind" : "text",
+              "value" : " — pins work to the main thread, useful for UI updates."
+            }
+          ],
+          "kind" : "paragraph"
+        }
+      ]
+    ],
+    "kind" : "unorderedList"
+  }
+]
