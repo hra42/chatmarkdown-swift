@@ -6,7 +6,7 @@ The supported syntax subset and streaming semantics are documented in [SPEC.md](
 
 ## Status
 
-Experimental. No semantic versioning, no release tags, no support promise. `main` is the contract. The library is extracted from a single consumer (AI Hub) and evolves in lockstep with it.
+Experimental. No semantic versioning, no release tags, no support promise. `main` is the contract. The library is extracted from a single consumer and evolves in lockstep with it.
 
 ## Installation
 
@@ -22,10 +22,6 @@ Experimental. No semantic versioning, no release tags, no support promise. `main
     ]
 )
 ```
-
-## Status
-
-Phase 2 (current): SwiftUI rendering of all supported features. Streaming-aware view-identity reuse arrives in Phase 3.
 
 ## Usage
 
