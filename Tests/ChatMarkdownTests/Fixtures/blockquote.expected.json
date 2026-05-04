@@ -1,0 +1,38 @@
+[
+  {
+    "blocks" : [
+      {
+        "inlines" : [
+          {
+            "kind" : "text",
+            "value" : "This is a quote."
+          },
+          {
+            "kind" : "text",
+            "value" : " "
+          },
+          {
+            "kind" : "text",
+            "value" : "It spans two lines."
+          }
+        ],
+        "kind" : "paragraph"
+      },
+      {
+        "blocks" : [
+          {
+            "inlines" : [
+              {
+                "kind" : "text",
+                "value" : "And this is nested."
+              }
+            ],
+            "kind" : "paragraph"
+          }
+        ],
+        "kind" : "blockquote"
+      }
+    ],
+    "kind" : "blockquote"
+  }
+]

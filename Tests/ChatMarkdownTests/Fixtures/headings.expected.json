@@ -1,0 +1,62 @@
+[
+  {
+    "inlines" : [
+      {
+        "kind" : "text",
+        "value" : "H1"
+      }
+    ],
+    "kind" : "heading",
+    "level" : 1
+  },
+  {
+    "inlines" : [
+      {
+        "kind" : "text",
+        "value" : "H2"
+      }
+    ],
+    "kind" : "heading",
+    "level" : 2
+  },
+  {
+    "inlines" : [
+      {
+        "kind" : "text",
+        "value" : "H3"
+      }
+    ],
+    "kind" : "heading",
+    "level" : 3
+  },
+  {
+    "inlines" : [
+      {
+        "kind" : "text",
+        "value" : "H4"
+      }
+    ],
+    "kind" : "heading",
+    "level" : 4
+  },
+  {
+    "inlines" : [
+      {
+        "kind" : "text",
+        "value" : "H5"
+      }
+    ],
+    "kind" : "heading",
+    "level" : 5
+  },
+  {
+    "inlines" : [
+      {
+        "kind" : "text",
+        "value" : "H6"
+      }
+    ],
+    "kind" : "heading",
+    "level" : 6
+  }
+]

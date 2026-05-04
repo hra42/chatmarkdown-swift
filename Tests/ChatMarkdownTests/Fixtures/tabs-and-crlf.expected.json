@@ -1,0 +1,35 @@
+[
+  {
+    "inlines" : [
+      {
+        "kind" : "text",
+        "value" : "Line1"
+      },
+      {
+        "kind" : "text",
+        "value" : " "
+      },
+      {
+        "kind" : "text",
+        "value" : "Line2"
+      },
+      {
+        "kind" : "text",
+        "value" : " "
+      },
+      {
+        "kind" : "text",
+        "value" : "TabbedCode"
+      },
+      {
+        "kind" : "text",
+        "value" : " "
+      },
+      {
+        "kind" : "text",
+        "value" : "StillTabbed"
+      }
+    ],
+    "kind" : "paragraph"
+  }
+]

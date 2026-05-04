@@ -1,0 +1,17 @@
+[
+  {
+    "inlines" : [
+      {
+        "kind" : "text",
+        "value" : "Here is a Swift snippet:"
+      }
+    ],
+    "kind" : "paragraph"
+  },
+  {
+    "code" : "func greet(_ name: String) -> String {\n    return \"Hello, \\(name)!\"\n}\n",
+    "isClosed" : true,
+    "kind" : "codeBlock",
+    "language" : "swift"
+  }
+]

@@ -1,0 +1,37 @@
+[
+  {
+    "inlines" : [
+      {
+        "kind" : "text",
+        "value" : "Hello, world! This is a simple paragraph with "
+      },
+      {
+        "children" : [
+          {
+            "kind" : "text",
+            "value" : "bold"
+          }
+        ],
+        "kind" : "bold"
+      },
+      {
+        "kind" : "text",
+        "value" : " and "
+      },
+      {
+        "children" : [
+          {
+            "kind" : "text",
+            "value" : "italic"
+          }
+        ],
+        "kind" : "italic"
+      },
+      {
+        "kind" : "text",
+        "value" : " text."
+      }
+    ],
+    "kind" : "paragraph"
+  }
+]
