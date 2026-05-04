@@ -1,0 +1,221 @@
+[
+  {
+    "inlines" : [
+      {
+        "kind" : "text",
+        "value" : "Sorting in Swift"
+      }
+    ],
+    "kind" : "heading",
+    "level" : 1
+  },
+  {
+    "inlines" : [
+      {
+        "kind" : "text",
+        "value" : "You can sort an array using "
+      },
+      {
+        "kind" : "code",
+        "value" : "sorted()"
+      },
+      {
+        "kind" : "text",
+        "value" : ". For example:"
+      }
+    ],
+    "kind" : "paragraph"
+  },
+  {
+    "code" : "let nums = [3, 1, 4, 1, 5, 9, 2, 6]\nlet asc = nums.sorted()\n",
+    "isClosed" : true,
+    "kind" : "codeBlock",
+    "language" : "swift"
+  },
+  {
+    "inlines" : [
+      {
+        "kind" : "text",
+        "value" : "Key points:"
+      }
+    ],
+    "kind" : "paragraph"
+  },
+  {
+    "items" : [
+      [
+        {
+          "inlines" : [
+            {
+              "kind" : "code",
+              "value" : "sorted()"
+            },
+            {
+              "kind" : "text",
+              "value" : " returns a new array."
+            }
+          ],
+          "kind" : "paragraph"
+        }
+      ],
+      [
+        {
+          "inlines" : [
+            {
+              "kind" : "text",
+              "value" : "Use "
+            },
+            {
+              "kind" : "code",
+              "value" : "sorted(by:)"
+            },
+            {
+              "kind" : "text",
+              "value" : " for a custom comparator."
+            }
+          ],
+          "kind" : "paragraph"
+        }
+      ],
+      [
+        {
+          "inlines" : [
+            {
+              "kind" : "text",
+              "value" : "For in-place sorting, use "
+            },
+            {
+              "kind" : "code",
+              "value" : "sort()"
+            },
+            {
+              "kind" : "text",
+              "value" : "."
+            }
+          ],
+          "kind" : "paragraph"
+        }
+      ]
+    ],
+    "kind" : "orderedList",
+    "start" : 1
+  },
+  {
+    "blocks" : [
+      {
+        "inlines" : [
+          {
+            "kind" : "text",
+            "value" : "Tip: prefer "
+          },
+          {
+            "kind" : "code",
+            "value" : "sorted()"
+          },
+          {
+            "kind" : "text",
+            "value" : " for clarity in functional pipelines."
+          }
+        ],
+        "kind" : "paragraph"
+      }
+    ],
+    "kind" : "blockquote"
+  },
+  {
+    "inlines" : [
+      {
+        "kind" : "text",
+        "value" : "See the "
+      },
+      {
+        "children" : [
+          {
+            "kind" : "text",
+            "value" : "official docs"
+          }
+        ],
+        "kind" : "link",
+        "url" : "https:\/\/developer.apple.com\/documentation\/swift\/array"
+      },
+      {
+        "kind" : "text",
+        "value" : " for more."
+      }
+    ],
+    "kind" : "paragraph"
+  },
+  {
+    "kind" : "horizontalRule"
+  },
+  {
+    "alignments" : [
+      "none",
+      "center",
+      "none"
+    ],
+    "headers" : [
+      [
+        {
+          "kind" : "text",
+          "value" : "Method"
+        }
+      ],
+      [
+        {
+          "kind" : "text",
+          "value" : "Mutates"
+        }
+      ],
+      [
+        {
+          "kind" : "text",
+          "value" : "Returns"
+        }
+      ]
+    ],
+    "kind" : "table",
+    "rows" : [
+      [
+        [
+          {
+            "kind" : "code",
+            "value" : "sort()"
+          }
+        ],
+        [
+          {
+            "kind" : "text",
+            "value" : "yes"
+          }
+        ],
+        [
+          {
+            "kind" : "code",
+            "value" : "Void"
+          }
+        ]
+      ],
+      [
+        [
+          {
+            "kind" : "code",
+            "value" : "sorted()"
+          }
+        ],
+        [
+          {
+            "kind" : "text",
+            "value" : "no"
+          }
+        ],
+        [
+          {
+            "kind" : "code",
+            "value" : "[Element]"
+          }
+        ]
+      ]
+    ]
+  }
+]

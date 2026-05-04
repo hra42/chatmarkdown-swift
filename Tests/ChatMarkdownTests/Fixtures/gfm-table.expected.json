@@ -1,0 +1,72 @@
+[
+  {
+    "alignments" : [
+      "left",
+      "center",
+      "right"
+    ],
+    "headers" : [
+      [
+        {
+          "kind" : "text",
+          "value" : "Name"
+        }
+      ],
+      [
+        {
+          "kind" : "text",
+          "value" : "Score"
+        }
+      ],
+      [
+        {
+          "kind" : "text",
+          "value" : "Notes"
+        }
+      ]
+    ],
+    "kind" : "table",
+    "rows" : [
+      [
+        [
+          {
+            "kind" : "text",
+            "value" : "Alice"
+          }
+        ],
+        [
+          {
+            "kind" : "text",
+            "value" : "92"
+          }
+        ],
+        [
+          {
+            "kind" : "text",
+            "value" : "top tier"
+          }
+        ]
+      ],
+      [
+        [
+          {
+            "kind" : "text",
+            "value" : "Bob"
+          }
+        ],
+        [
+          {
+            "kind" : "text",
+            "value" : "78"
+          }
+        ],
+        [
+          {
+            "kind" : "text",
+            "value" : "works hard"
+          }
+        ]
+      ]
+    ]
+  }
+]

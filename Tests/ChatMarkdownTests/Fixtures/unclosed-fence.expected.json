@@ -1,0 +1,17 @@
+[
+  {
+    "inlines" : [
+      {
+        "kind" : "text",
+        "value" : "Mid-stream sample:"
+      }
+    ],
+    "kind" : "paragraph"
+  },
+  {
+    "code" : "def hello(name):\n    print(\"hi\", name)\n",
+    "isClosed" : true,
+    "kind" : "codeBlock",
+    "language" : "python"
+  }
+]

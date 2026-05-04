@@ -1,0 +1,139 @@
+[
+  {
+    "items" : [
+      [
+        {
+          "inlines" : [
+            {
+              "kind" : "text",
+              "value" : "top one"
+            }
+          ],
+          "kind" : "paragraph"
+        }
+      ],
+      [
+        {
+          "inlines" : [
+            {
+              "kind" : "text",
+              "value" : "top two"
+            }
+          ],
+          "kind" : "paragraph"
+        },
+        {
+          "items" : [
+            [
+              {
+                "inlines" : [
+                  {
+                    "kind" : "text",
+                    "value" : "nested a"
+                  }
+                ],
+                "kind" : "paragraph"
+              }
+            ],
+            [
+              {
+                "inlines" : [
+                  {
+                    "kind" : "text",
+                    "value" : "nested b"
+                  }
+                ],
+                "kind" : "paragraph"
+              },
+              {
+                "items" : [
+                  [
+                    {
+                      "inlines" : [
+                        {
+                          "kind" : "text",
+                          "value" : "deeper"
+                        }
+                      ],
+                      "kind" : "paragraph"
+                    }
+                  ]
+                ],
+                "kind" : "unorderedList"
+              }
+            ]
+          ],
+          "kind" : "unorderedList"
+        }
+      ],
+      [
+        {
+          "inlines" : [
+            {
+              "kind" : "text",
+              "value" : "top three"
+            }
+          ],
+          "kind" : "paragraph"
+        }
+      ]
+    ],
+    "kind" : "unorderedList"
+  },
+  {
+    "items" : [
+      [
+        {
+          "inlines" : [
+            {
+              "kind" : "text",
+              "value" : "ordered first"
+            }
+          ],
+          "kind" : "paragraph"
+        }
+      ],
+      [
+        {
+          "inlines" : [
+            {
+              "kind" : "text",
+              "value" : "ordered second"
+            }
+          ],
+          "kind" : "paragraph"
+        },
+        {
+          "items" : [
+            [
+              {
+                "inlines" : [
+                  {
+                    "kind" : "text",
+                    "value" : "inner"
+                  }
+                ],
+                "kind" : "paragraph"
+              }
+            ],
+            [
+              {
+                "inlines" : [
+                  {
+                    "kind" : "text",
+                    "value" : "inner two"
+                  }
+                ],
+                "kind" : "paragraph"
+              }
+            ]
+          ],
+          "kind" : "orderedList",
+          "start" : 1
+        }
+      ]
+    ],
+    "kind" : "orderedList",
+    "start" : 1
+  }
+]
