@@ -2,9 +2,9 @@ import XCTest
 @testable import ChatMarkdown
 
 // These inputs all previously crashed the third-party MarkdownView's
-// RangeAdjuster in AI Hub, forcing a sanitization pre-pass. With our own
-// normalizer over swift-markdown directly, the inputs must parse cleanly
-// without any sanitization layer.
+// RangeAdjuster, forcing a sanitization pre-pass. With our own normalizer
+// over swift-markdown directly, the inputs must parse cleanly without any
+// sanitization layer.
 final class EdgeCaseTests: XCTestCase {
     func testEmptyString() {
         XCTAssertEqual(ChatMarkdownDocument(markdown: "").blocks, [])

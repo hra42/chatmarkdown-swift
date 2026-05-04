@@ -14,6 +14,26 @@ enum FixtureSupport {
         "tabs-and-crlf",
         "unclosed-fence",
         "empty",
+        "multi-paragraph-prose",
+        "code-fence-python",
+        "code-fence-typescript",
+        "code-fence-bash",
+        "code-fence-json",
+        "code-fence-no-lang",
+        "inline-code-heavy",
+        "mixed-list-bold",
+        "deeply-nested-list",
+        "blockquote-with-code",
+        "table-aligned",
+        "table-multirow",
+        "headings-h1-h6",
+        "links-only",
+        "horizontal-rule-separating",
+        "unclosed-bold",
+        "mid-list-emit",
+        "code-then-prose",
+        "conversational-answer",
+        "troubleshooting-steps",
     ]
 
     static func loadInput(_ name: String) throws -> String {
@@ -36,6 +56,8 @@ enum FixtureSupport {
     static let streamingNames: [String] = [
         "typing-paragraph-then-code",
         "duplicate-blocks",
+        "unclosed-fence-resolves",
+        "table-row-append",
     ]
 
     struct StreamingFixture: Codable {
