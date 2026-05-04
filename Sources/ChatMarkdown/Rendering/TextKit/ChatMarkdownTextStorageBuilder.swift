@@ -147,7 +147,7 @@ enum ChatMarkdownTextStorageBuilder {
         case .blockquote(let blocks):
             for (idx, sub) in blocks.enumerated() {
                 let subStart = out.length
-                appendBlock(sub, into: out, theme: theme, indent: indent)
+                appendBlock(sub, into: out, theme: theme, indent: indent + 1)
                 let subRange = NSRange(location: subStart, length: out.length - subStart)
                 if subRange.length > 0 {
                     out.addAttribute(.chatMarkdownBlockquoteRule, value: true, range: subRange)

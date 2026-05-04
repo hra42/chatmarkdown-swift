@@ -15,55 +15,70 @@ typealias _PlatformTextView = NSTextView
 typealias _PlatformTextView = UITextView
 #endif
 
+#if canImport(AppKit)
+typealias _PlatformColor = NSColor
+#else
+typealias _PlatformColor = UIColor
+#endif
+
+/// Geometry helpers shared by `ChatMarkdownLayoutManager.drawBackground(...)`.
+/// `origin` is the textContainer origin in view coordinates as TextKit passes
+/// it to `drawBackground(forGlyphRange:at:)` — it already accounts for
+/// `textContainerInset`, so callers must not add the inset again.
 enum ChatMarkdownTextKitDrawing {
-    @MainActor
-    static func drawAnnotations(in textView: _PlatformTextView, theme: ChatMarkdownTheme?) {
-        guard let theme else { return }
-        #if canImport(AppKit)
-        guard let layoutManager = textView.layoutManager,
-              let textContainer = textView.textContainer,
-              let textStorage = textView.textStorage else { return }
-        let inset = CGPoint(x: textView.textContainerInset.width, y: textView.textContainerInset.height)
-        #else
-        let layoutManager = textView.layoutManager
-        let textContainer = textView.textContainer
-        let textStorage = textView.textStorage
-        let inset = CGPoint(x: textView.textContainerInset.left, y: textView.textContainerInset.top)
-        #endif
-
-        let fullRange = NSRange(location: 0, length: textStorage.length)
-        let blockquoteColor = TextKitThemeAdapter.platformColor(theme.blockquoteRuleColor)
-        let hrColor = TextKitThemeAdapter.platformColor(theme.horizontalRuleColor)
-
-        textStorage.enumerateAttribute(.chatMarkdownBlockquoteRule, in: fullRange, options: []) { value, range, _ in
+    static func drawBlockquoteRules(
+        glyphsToDraw: NSRange,
+        origin: CGPoint,
+        layoutManager: NSLayoutManager,
+        textContainer: NSTextContainer,
+        textStorage: NSTextStorage,
+        color: _PlatformColor
+    ) {
+        let charsToDraw = layoutManager.characterRange(forGlyphRange: glyphsToDraw, actualGlyphRange: nil)
+        textStorage.enumerateAttribute(.chatMarkdownBlockquoteRule, in: charsToDraw, options: []) { value, range, _ in
             guard value != nil else { return }
             let glyphRange = layoutManager.glyphRange(forCharacterRange: range, actualCharacterRange: nil)
             let usedRect = layoutManager.boundingRect(forGlyphRange: glyphRange, in: textContainer)
+            let paragraphStyle = textStorage.attribute(.paragraphStyle, at: range.location, effectiveRange: nil) as? NSParagraphStyle
+            let headIndent = paragraphStyle?.headIndent ?? 0
+            let ruleGap: CGFloat = 6
+            let ruleWidth: CGFloat = 3
+            let ruleX = origin.x + max(0, headIndent - ruleGap)
             let ruleRect = CGRect(
-                x: inset.x + 2,
-                y: inset.y + usedRect.minY,
-                width: 3,
+                x: ruleX,
+                y: origin.y + usedRect.minY,
+                width: ruleWidth,
                 height: max(usedRect.height, 1)
             )
-            blockquoteColor.setFill()
+            color.setFill()
             #if canImport(AppKit)
             NSBezierPath(rect: ruleRect).fill()
             #else
             UIBezierPath(rect: ruleRect).fill()
             #endif
         }
+    }
 
-        textStorage.enumerateAttribute(.chatMarkdownHorizontalRule, in: fullRange, options: []) { value, range, _ in
+    static func drawHorizontalRules(
+        glyphsToDraw: NSRange,
+        origin: CGPoint,
+        layoutManager: NSLayoutManager,
+        textContainer: NSTextContainer,
+        textStorage: NSTextStorage,
+        color: _PlatformColor
+    ) {
+        let charsToDraw = layoutManager.characterRange(forGlyphRange: glyphsToDraw, actualGlyphRange: nil)
+        textStorage.enumerateAttribute(.chatMarkdownHorizontalRule, in: charsToDraw, options: []) { value, range, _ in
             guard value != nil else { return }
             let glyphRange = layoutManager.glyphRange(forCharacterRange: range, actualCharacterRange: nil)
             let usedRect = layoutManager.boundingRect(forGlyphRange: glyphRange, in: textContainer)
             let lineRect = CGRect(
-                x: inset.x,
-                y: inset.y + usedRect.midY - 0.5,
+                x: origin.x,
+                y: origin.y + usedRect.midY - 0.5,
                 width: textContainer.size.width,
                 height: 1
             )
-            hrColor.setFill()
+            color.setFill()
             #if canImport(AppKit)
             NSBezierPath(rect: lineRect).fill()
             #else

@@ -114,6 +114,11 @@ struct ChatMarkdownTextKitHost: NSViewRepresentable {
                 theme: theme,
                 tableStyle: tableStyle
             )
+            if let layoutManager = view.layoutManager as? ChatMarkdownLayoutManager {
+                layoutManager.chatMarkdownTheme = theme
+                let full = NSRange(location: 0, length: storage.length)
+                layoutManager.invalidateDisplay(forCharacterRange: full)
+            }
         }
         view.chatMarkdownBlockIDs = result.blockIDs
         view.chatMarkdownBlockRanges = result.blockRanges
@@ -134,10 +139,20 @@ final class ChatMarkdownNSTextView: NSTextView, ChatMarkdownPlatformTextViewProt
     let chatMarkdownOverlayManager = ChatMarkdownTextKitOverlayManager()
 
     convenience override init(frame frameRect: NSRect) {
-        // Always force TextKit 1 — modern NSTextView defaults to TextKit 2,
-        // which silently disables `NSTextAttachment.attachmentBounds(...)`.
-        self.init(usingTextLayoutManager: false)
-        self.frame = frameRect
+        // Build the TextKit 1 triple manually so we can attach our custom
+        // layout manager. Going through `init(usingTextLayoutManager: false)`
+        // would give us a stock NSLayoutManager that we'd then have to
+        // replace, and modern NSTextView defaults to TextKit 2 (which
+        // silently disables `NSTextAttachment.attachmentBounds(...)`), so
+        // we must avoid the default init path entirely.
+        let storage = NSTextStorage()
+        let layoutManager = ChatMarkdownLayoutManager()
+        let container = NSTextContainer(size: CGSize(width: 0, height: CGFloat.greatestFiniteMagnitude))
+        container.widthTracksTextView = true
+        container.heightTracksTextView = false
+        layoutManager.addTextContainer(container)
+        storage.addLayoutManager(layoutManager)
+        self.init(frame: frameRect, textContainer: container)
     }
 
     override init(frame frameRect: NSRect, textContainer: NSTextContainer?) {
@@ -183,11 +198,6 @@ final class ChatMarkdownNSTextView: NSTextView, ChatMarkdownPlatformTextViewProt
             layoutManager.invalidateLayout(forCharacterRange: range, actualCharacterRange: nil)
         }
         layoutManager.ensureLayout(for: textContainer)
-    }
-
-    override func draw(_ dirtyRect: NSRect) {
-        super.draw(dirtyRect)
-        ChatMarkdownTextKitDrawing.drawAnnotations(in: self, theme: chatMarkdownTheme)
     }
 
     func relayoutChatMarkdownOverlays() {
@@ -298,6 +308,11 @@ struct ChatMarkdownTextKitHost: UIViewRepresentable {
             theme: theme,
             tableStyle: tableStyle
         )
+        if let layoutManager = view.layoutManager as? ChatMarkdownLayoutManager {
+            layoutManager.chatMarkdownTheme = theme
+            let full = NSRange(location: 0, length: view.textStorage.length)
+            layoutManager.invalidateDisplay(forCharacterRange: full)
+        }
         view.chatMarkdownBlockIDs = result.blockIDs
         view.chatMarkdownBlockRanges = result.blockRanges
         view.invalidateIntrinsicContentSize()
@@ -317,13 +332,22 @@ final class ChatMarkdownUITextView: UITextView, ChatMarkdownPlatformTextViewProt
     let chatMarkdownOverlayManager = ChatMarkdownTextKitOverlayManager()
 
     convenience override init(frame: CGRect, textContainer: NSTextContainer?) {
-        // Force TextKit 1 — UITextView defaults to TextKit 2 in iOS 16+,
-        // which doesn't dispatch to `NSTextAttachment.attachmentBounds(...)`.
-        self.init(usingTextLayoutManager: false)
-        self.frame = frame
-        // textContainer arg is ignored intentionally; the TextKit 1 init
-        // creates its own.
+        // Build the TextKit 1 triple manually so our custom layout manager
+        // is attached from the start. UITextView defaults to TextKit 2 in
+        // iOS 16+, which doesn't dispatch to
+        // `NSTextAttachment.attachmentBounds(...)`, so we must not go
+        // through the default init path. The caller's `textContainer`
+        // argument is intentionally ignored — TextKit 1's storage/layout
+        // manager wiring needs to be ours.
         _ = textContainer
+        let storage = NSTextStorage()
+        let layoutManager = ChatMarkdownLayoutManager()
+        let container = NSTextContainer(size: CGSize(width: 0, height: CGFloat.greatestFiniteMagnitude))
+        container.widthTracksTextView = true
+        container.heightTracksTextView = false
+        layoutManager.addTextContainer(container)
+        storage.addLayoutManager(layoutManager)
+        self.init(frame: frame, textContainer: container)
     }
 
     override var intrinsicContentSize: CGSize {
@@ -353,11 +377,6 @@ final class ChatMarkdownUITextView: UITextView, ChatMarkdownPlatformTextViewProt
             layoutManager.invalidateLayout(forCharacterRange: range, actualCharacterRange: nil)
         }
         layoutManager.ensureLayout(for: textContainer)
-    }
-
-    override func draw(_ rect: CGRect) {
-        super.draw(rect)
-        ChatMarkdownTextKitDrawing.drawAnnotations(in: self, theme: chatMarkdownTheme)
     }
 
     func relayoutChatMarkdownOverlays() {
