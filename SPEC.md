@@ -68,14 +68,56 @@ Per CommonMark, unmatched `*` / `**` / `_` / `__` delimiters are emitted as lite
 
 The renderer must not re-evaluate `View.body` for blocks `0..<n−1` across consecutive snapshots that share a stable prefix of length n−1. Verified by `StreamingPrefixStabilityTests` (model-level, deterministic) and, in DEBUG builds, by `ChatMarkdownDebug.blockBodyEvaluations`.
 
+## Renderers
+
+`chatmarkdown-swift` ships two renderers, selected per-view via the `chatMarkdownRenderer(_:)` modifier. The choice is internal to `ChatMarkdownView`; the document model and parsed output (`[ChatMarkdownBlock]`) are identical regardless of renderer.
+
+| Renderer    | When to use                                                  | Selection support                  |
+| ----------- | ------------------------------------------------------------ | ---------------------------------- |
+| `.textKit`  | Default. Apple platforms (macOS, iOS, visionOS).             | Cross-block drag selection         |
+| `.swiftUI`  | Fallback for debugging or platform-specific issues. Always used on platforms without AppKit/UIKit. | Selection limited to a single block |
+
+Both renderers consume the same `ChatMarkdownDocument` and respect the same theme, code-block style, and table-style protocols. Switching renderers is a single modifier — no API or model change.
+
+The `.textKit` renderer flattens the document to a single `NSAttributedString` rendered in one `NSTextView`/`UITextView`. Code-block chrome (header, copy button) and table grids are SwiftUI overlays positioned over reserved attachment-rect runs in the storage. The underlying code text and table-cell text remain in the storage as actual selectable characters; the overlays draw decoration only.
+
+The `.swiftUI` renderer composes each block as a separate SwiftUI view inside a `VStack`. Selection is per-block (a SwiftUI limitation; `.textSelection(.enabled)` does not span multiple `Text` views). Useful as a debug fallback.
+
+## TextKit storage attribute contract
+
+The `.textKit` renderer's `NSAttributedString` is built by `ChatMarkdownTextStorageBuilder`. The custom attribute keys below are part of the contract. A future port (or external consumer) that produces an equivalent storage may rely on them.
+
+| Attribute key                       | Value type        | Semantics                                                                       |
+| ----------------------------------- | ----------------- | ------------------------------------------------------------------------------- |
+| `.chatMarkdownBlockID`              | `NSNumber<UInt64>`| Per-block fingerprint (see [Block identity](#block-identity)).                  |
+| `.chatMarkdownBlockKind`            | `String`          | Raw value of `ChatMarkdownBlockKind` (`heading`, `paragraph`, `codeBlock`, `unorderedList`, `orderedList`, `blockquote`, `table`, `horizontalRule`). Stamped over the entire range of one block's content. |
+| `.chatMarkdownAttachmentSlot`       | `ChatMarkdownAttachmentSlotBox` (boxed payload) | Marks runs reserved for SwiftUI overlay placement. Payload distinguishes `.codeBlock(language, code, isClosed)` from `.table(headers, rows, alignments)`. |
+| `.chatMarkdownBlockquoteRule`       | `Bool`            | True over runs that are inside a blockquote — drawn as a left rule by the text view. |
+| `.chatMarkdownHorizontalRule`       | `Bool`            | True over the single newline run that represents an `<hr>`.                     |
+| `.chatMarkdownListMarker`           | `Bool`            | True over the marker prefix (`•\t`, `1.\t`, ...) of a list item.                |
+| `.chatMarkdownInlineCode`           | `Bool`            | True over inline-code runs — used by drawing code to render a rounded background. |
+
+Block boundaries: the builder appends `"\n\n"` between blocks; that separator is **not** stamped with a block kind. Block ranges in `ChatMarkdownTextStorageBuildResult.blockRanges` cover only the block's own content.
+
+Attachment slot ranges:
+- Code blocks: a single object-replacement character (`\u{FFFC}`) carries the slot attribute. The actual code body follows as monospaced text — also part of the storage, also selectable.
+- Tables: the slot covers `1 + (header ? 1 : 0) + rowCount` characters (one object-replacement plus one newline per logical row) so the overlay has reserved vertical space. The underlying characters are whitespace; the table is drawn entirely by the SwiftUI overlay.
+
 ## Test fixtures
 
-`Tests/Fixtures/` contains paired files:
+`Tests/ChatMarkdownTests/Fixtures/` contains paired files:
 
 - `<name>.md` — input Markdown
 - `<name>.expected.json` — JSON encoding of `[ChatMarkdownBlock]` (the normalized output)
 
 The JSON shape is deliberately readable so future ports can decode and assert against the same files. Fixtures are the conformance suite; if a future port produces equivalent JSON for every fixture, it is conformant.
+
+`Tests/ChatMarkdownTests/Fixtures/textkit/` adds a TextKit-specific conformance set:
+
+- `<name>.md` — input Markdown
+- `<name>.textkit.json` — `{ "length": Int, "attachmentSlots": [{ "location", "length", "kind" }], "blockKinds": [String] }`
+
+These pin the storage contract above for representative inputs (prose-only, single code block, single table, mixed content, blockquote + horizontal rule). Regenerate with `REGEN_FIXTURES=1 swift test --filter TextKitFixturesConformanceTests` after intentional builder changes.
 
 ## Streaming fixtures
 

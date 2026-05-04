@@ -1,0 +1,13 @@
+{
+  "attachmentSlots" : [
+    {
+      "kind" : "table",
+      "length" : 5,
+      "location" : 0
+    }
+  ],
+  "blockKinds" : [
+    "table"
+  ],
+  "length" : 5
+}
