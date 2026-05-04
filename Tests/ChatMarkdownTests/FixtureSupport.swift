@@ -33,6 +33,47 @@ enum FixtureSupport {
         return e
     }
 
+    static let streamingNames: [String] = [
+        "typing-paragraph-then-code",
+        "duplicate-blocks",
+    ]
+
+    struct StreamingFixture: Codable {
+        var description: String
+        var steps: [Step]
+
+        struct Step: Codable {
+            var input: String
+            var stableBlockCount: Int
+            var blockIDs: [String]
+        }
+    }
+
+    static func loadStreaming(_ name: String) throws -> StreamingFixture {
+        let url = try requireStreamingURL(name: name)
+        let data = try Data(contentsOf: url)
+        return try JSONDecoder().decode(StreamingFixture.self, from: data)
+    }
+
+    static func sourceStreamingFixturesDirectory() -> URL {
+        sourceFixturesDirectory().appendingPathComponent("streaming")
+    }
+
+    private static func requireStreamingURL(name: String) throws -> URL {
+        if let url = Bundle.module.url(forResource: name, withExtension: "json", subdirectory: "Fixtures/streaming") {
+            return url
+        }
+        let direct = sourceStreamingFixturesDirectory().appendingPathComponent("\(name).json")
+        if FileManager.default.fileExists(atPath: direct.path) {
+            return direct
+        }
+        throw NSError(
+            domain: "FixtureSupport",
+            code: 2,
+            userInfo: [NSLocalizedDescriptionKey: "Missing streaming fixture: \(name).json"]
+        )
+    }
+
     static func sourceFixturesDirectory() -> URL {
         // #filePath points at this file inside Tests/ChatMarkdownTests/.
         URL(fileURLWithPath: #filePath)

@@ -5,9 +5,12 @@ struct BlockListView: View {
     let theme: ChatMarkdownTheme
 
     var body: some View {
+        let ids = BlockIDSequence.make(blocks)
         VStack(alignment: .leading, spacing: theme.blockSpacing) {
-            ForEach(Array(blocks.enumerated()), id: \.offset) { _, block in
-                view(for: block)
+            ForEach(Array(zip(ids, blocks)), id: \.0.fingerprint) { pair, block in
+                _DebugCountingWrapper(fingerprint: pair.fingerprint) {
+                    view(for: block)
+                }
             }
         }
     }

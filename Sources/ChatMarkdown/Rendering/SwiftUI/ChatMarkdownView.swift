@@ -6,11 +6,20 @@ public struct ChatMarkdownView: View {
 
     @Environment(\.chatMarkdownThemeOverride) private var themeOverride
 
+    /// Convenience init that parses `markdown` on every body evaluation.
+    /// Suitable for static messages. Streaming callers should construct and
+    /// own a `ChatMarkdownDocument`, update it per chunk, and pass it to the
+    /// `(ChatMarkdownDocument, MessageRole)` init — that path preserves the
+    /// per-block identities required by the prefix-stability invariant in
+    /// `SPEC.md`.
     public init(_ markdown: String, role: MessageRole = .assistant) {
         self.document = ChatMarkdownDocument(markdown: markdown)
         self.role = role
     }
 
+    /// Streaming-friendly init: identity of preceding blocks is preserved
+    /// across re-renders when the caller mutates the document by appending
+    /// to the last block only.
     public init(_ document: ChatMarkdownDocument, role: MessageRole = .assistant) {
         self.document = document
         self.role = role

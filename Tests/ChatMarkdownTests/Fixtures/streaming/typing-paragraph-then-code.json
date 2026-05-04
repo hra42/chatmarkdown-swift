@@ -1,0 +1,65 @@
+{
+  "description" : "LLM-style typing of a heading, paragraph, fenced code block (open then closed), and a trailing paragraph. Validates prefix stability across each kind of trailing-block transition.",
+  "steps" : [
+    {
+      "blockIDs" : [
+        "00000000bd61d6e6"
+      ],
+      "input" : "# Title",
+      "stableBlockCount" : 0
+    },
+    {
+      "blockIDs" : [
+        "00000000bd61d6e6",
+        "000000005712f40a"
+      ],
+      "input" : "# Title\n\nIntro",
+      "stableBlockCount" : 1
+    },
+    {
+      "blockIDs" : [
+        "00000000bd61d6e6",
+        "00000000c49a8fa2"
+      ],
+      "input" : "# Title\n\nIntro paragraph",
+      "stableBlockCount" : 1
+    },
+    {
+      "blockIDs" : [
+        "00000000bd61d6e6",
+        "00000000f6d36008",
+        "0000000039d23bb9"
+      ],
+      "input" : "# Title\n\nIntro paragraph.\n\n```swift",
+      "stableBlockCount" : 1
+    },
+    {
+      "blockIDs" : [
+        "00000000bd61d6e6",
+        "00000000f6d36008",
+        "000000003c35db7b"
+      ],
+      "input" : "# Title\n\nIntro paragraph.\n\n```swift\nlet x = 1",
+      "stableBlockCount" : 2
+    },
+    {
+      "blockIDs" : [
+        "00000000bd61d6e6",
+        "00000000f6d36008",
+        "000000005cc107c1"
+      ],
+      "input" : "# Title\n\nIntro paragraph.\n\n```swift\nlet x = 1\n```",
+      "stableBlockCount" : 2
+    },
+    {
+      "blockIDs" : [
+        "00000000bd61d6e6",
+        "00000000f6d36008",
+        "000000005cc107c1",
+        "0000000087bb7a00"
+      ],
+      "input" : "# Title\n\nIntro paragraph.\n\n```swift\nlet x = 1\n```\n\nDone.",
+      "stableBlockCount" : 3
+    }
+  ]
+}

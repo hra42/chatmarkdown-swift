@@ -55,10 +55,17 @@ private struct DefaultCodeBlockBody: View {
 
     private var codeBody: some View {
         ScrollView(.horizontal, showsIndicators: false) {
-            applySelection(Text(highlighted.characters.isEmpty ? AttributedString(configuration.code) : highlighted))
-                .font(theme.codeFont)
-                .padding(12)
-                .frame(minWidth: 0, alignment: .leading)
+            HStack(alignment: .bottom, spacing: 0) {
+                applySelection(Text(highlighted.characters.isEmpty ? AttributedString(configuration.code) : highlighted))
+                    .font(theme.codeFont)
+                    .frame(minWidth: 0, alignment: .leading)
+                if !configuration.isClosed {
+                    StreamingCaret()
+                        .font(theme.codeFont)
+                        .foregroundStyle(theme.secondaryTextColor)
+                }
+            }
+            .padding(12)
         }
     }
 
@@ -68,6 +75,16 @@ private struct DefaultCodeBlockBody: View {
             text.textSelection(.enabled)
         } else {
             text.textSelection(.disabled)
+        }
+    }
+}
+
+private struct StreamingCaret: View {
+    var body: some View {
+        TimelineView(.periodic(from: .now, by: 0.5)) { context in
+            let on = Int(context.date.timeIntervalSinceReferenceDate * 2) % 2 == 0
+            Text("▍")
+                .opacity(on ? 1 : 0)
         }
     }
 }

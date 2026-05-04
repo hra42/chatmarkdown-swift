@@ -10,7 +10,7 @@
   },
   {
     "code" : "def hello(name):\n    print(\"hi\", name)\n",
-    "isClosed" : true,
+    "isClosed" : false,
     "kind" : "codeBlock",
     "language" : "python"
   }
