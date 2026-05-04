@@ -107,6 +107,32 @@ final class TextKitBuilderTests: XCTestCase {
         XCTAssertTrue(sawRule, "Blockquote fixture produced no chatMarkdownBlockquoteRule runs")
     }
 
+    func testMultiParagraphBlockquoteRuleIsContiguous() {
+        let markdown = "> p1\n>\n> p2"
+        let document = ChatMarkdownDocument(markdown: markdown)
+        let attributed = ChatMarkdownTextStorageBuilder.build(document: document, theme: ChatMarkdownTheme())
+
+        var ruleRanges: [NSRange] = []
+        attributed.enumerateAttribute(
+            .chatMarkdownBlockquoteRule,
+            in: NSRange(location: 0, length: attributed.length),
+            options: []
+        ) { value, range, _ in
+            if (value as? Bool) == true { ruleRanges.append(range) }
+        }
+
+        XCTAssertEqual(
+            ruleRanges.count, 1,
+            "Multi-paragraph blockquote must produce a single contiguous rule run, got \(ruleRanges.count): \(ruleRanges)"
+        )
+        guard let only = ruleRanges.first else { return }
+        let nsString = attributed.string as NSString
+        let covered = nsString.substring(with: only)
+        XCTAssertTrue(covered.contains("p1"))
+        XCTAssertTrue(covered.contains("p2"))
+        XCTAssertTrue(covered.contains("\n"), "Inter-paragraph separator must carry the rule attribute")
+    }
+
     // MARK: - Horizontal rule
 
     func testHorizontalRuleFixtureMarksRuleAttribute() throws {

@@ -145,16 +145,16 @@ enum ChatMarkdownTextStorageBuilder {
             }
 
         case .blockquote(let blocks):
+            let blockquoteStart = out.length
             for (idx, sub) in blocks.enumerated() {
-                let subStart = out.length
                 appendBlock(sub, into: out, theme: theme, indent: indent + 1)
-                let subRange = NSRange(location: subStart, length: out.length - subStart)
-                if subRange.length > 0 {
-                    out.addAttribute(.chatMarkdownBlockquoteRule, value: true, range: subRange)
-                }
                 if idx < blocks.count - 1 {
                     out.append(NSAttributedString(string: "\n"))
                 }
+            }
+            let blockquoteRange = NSRange(location: blockquoteStart, length: out.length - blockquoteStart)
+            if blockquoteRange.length > 0 {
+                out.addAttribute(.chatMarkdownBlockquoteRule, value: true, range: blockquoteRange)
             }
 
         case .table(let headers, let rows, let alignments):

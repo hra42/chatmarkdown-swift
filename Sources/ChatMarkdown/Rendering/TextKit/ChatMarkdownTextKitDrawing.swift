@@ -35,6 +35,8 @@ enum ChatMarkdownTextKitDrawing {
         color: _PlatformColor
     ) {
         let charsToDraw = layoutManager.characterRange(forGlyphRange: glyphsToDraw, actualGlyphRange: nil)
+        var pending: CGRect? = nil
+        let mergeTolerance: CGFloat = 2
         textStorage.enumerateAttribute(.chatMarkdownBlockquoteRule, in: charsToDraw, options: []) { value, range, _ in
             guard value != nil else { return }
             let glyphRange = layoutManager.glyphRange(forCharacterRange: range, actualCharacterRange: nil)
@@ -50,13 +52,31 @@ enum ChatMarkdownTextKitDrawing {
                 width: ruleWidth,
                 height: max(usedRect.height, 1)
             )
-            color.setFill()
-            #if canImport(AppKit)
-            NSBezierPath(rect: ruleRect).fill()
-            #else
-            UIBezierPath(rect: ruleRect).fill()
-            #endif
+            if var prev = pending,
+               prev.minX == ruleRect.minX,
+               prev.width == ruleRect.width,
+               ruleRect.minY <= prev.maxY + mergeTolerance {
+                prev.size.height = max(prev.maxY, ruleRect.maxY) - prev.minY
+                pending = prev
+            } else {
+                if let prev = pending {
+                    fillRule(prev, color: color)
+                }
+                pending = ruleRect
+            }
         }
+        if let prev = pending {
+            fillRule(prev, color: color)
+        }
+    }
+
+    private static func fillRule(_ rect: CGRect, color: _PlatformColor) {
+        color.setFill()
+        #if canImport(AppKit)
+        NSBezierPath(rect: rect).fill()
+        #else
+        UIBezierPath(rect: rect).fill()
+        #endif
     }
 
     static func drawHorizontalRules(
