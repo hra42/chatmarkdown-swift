@@ -5,6 +5,9 @@ public struct ChatMarkdownView: View {
     private let role: MessageRole
 
     @Environment(\.chatMarkdownThemeOverride) private var themeOverride
+    @Environment(\.chatMarkdownRendererKind) private var rendererKind
+    @Environment(\.chatMarkdownCodeBlockStyleOverride) private var codeBlockStyleOverride
+    @Environment(\.chatMarkdownTableStyleOverride) private var tableStyleOverride
 
     /// Convenience init that parses `markdown` on every body evaluation.
     /// Suitable for static messages. Streaming callers should construct and
@@ -27,8 +30,23 @@ public struct ChatMarkdownView: View {
 
     public var body: some View {
         let theme = themeOverride ?? .forRole(role)
-        BlockListView(blocks: document.blocks, theme: theme)
-            .foregroundStyle(theme.textColor)
-            .tint(theme.linkColor)
+        Group {
+            #if canImport(AppKit) || canImport(UIKit)
+            if rendererKind == .textKit {
+                ChatMarkdownTextKitHost(
+                    document: document,
+                    theme: theme,
+                    codeBlockStyle: codeBlockStyleOverride,
+                    tableStyle: tableStyleOverride
+                )
+            } else {
+                BlockListView(blocks: document.blocks, theme: theme)
+            }
+            #else
+            BlockListView(blocks: document.blocks, theme: theme)
+            #endif
+        }
+        .foregroundStyle(theme.textColor)
+        .tint(theme.linkColor)
     }
 }
