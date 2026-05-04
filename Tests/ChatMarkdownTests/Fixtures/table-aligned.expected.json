@@ -1,0 +1,92 @@
+[
+  {
+    "alignments" : [
+      "left",
+      "center",
+      "right"
+    ],
+    "headers" : [
+      [
+        {
+          "kind" : "text",
+          "value" : "Name"
+        }
+      ],
+      [
+        {
+          "kind" : "text",
+          "value" : "Type"
+        }
+      ],
+      [
+        {
+          "kind" : "text",
+          "value" : "Default"
+        }
+      ]
+    ],
+    "kind" : "table",
+    "rows" : [
+      [
+        [
+          {
+            "kind" : "code",
+            "value" : "padding"
+          }
+        ],
+        [
+          {
+            "kind" : "text",
+            "value" : "CGFloat"
+          }
+        ],
+        [
+          {
+            "kind" : "text",
+            "value" : "8"
+          }
+        ]
+      ],
+      [
+        [
+          {
+            "kind" : "code",
+            "value" : "spacing"
+          }
+        ],
+        [
+          {
+            "kind" : "text",
+            "value" : "CGFloat"
+          }
+        ],
+        [
+          {
+            "kind" : "text",
+            "value" : "4"
+          }
+        ]
+      ],
+      [
+        [
+          {
+            "kind" : "code",
+            "value" : "radius"
+          }
+        ],
+        [
+          {
+            "kind" : "text",
+            "value" : "CGFloat"
+          }
+        ],
+        [
+          {
+            "kind" : "text",
+            "value" : "12"
+          }
+        ]
+      ]
+    ]
+  }
+]

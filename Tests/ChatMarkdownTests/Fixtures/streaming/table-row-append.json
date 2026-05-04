@@ -1,0 +1,29 @@
+{
+  "description" : "A leading prose paragraph stays stable while a trailing GFM table grows row-by-row. The whole table is one block, so its identity changes on every append; the prose paragraph ahead of it remains in the stable prefix.",
+  "steps" : [
+    {
+      "blockIDs" : [
+        "00000000359131b8",
+        "00000000a32acb9a"
+      ],
+      "input" : "Here are the current pricing tiers:\n\n| Tier | Price |\n| ---- | ----- |\n| Free | $0    |",
+      "stableBlockCount" : 0
+    },
+    {
+      "blockIDs" : [
+        "00000000359131b8",
+        "000000007fe90056"
+      ],
+      "input" : "Here are the current pricing tiers:\n\n| Tier | Price |\n| ---- | ----- |\n| Free | $0    |\n| Pro  | $20   |",
+      "stableBlockCount" : 1
+    },
+    {
+      "blockIDs" : [
+        "00000000359131b8",
+        "000000005d46c453"
+      ],
+      "input" : "Here are the current pricing tiers:\n\n| Tier  | Price |\n| ----- | ----- |\n| Free  | $0    |\n| Pro   | $20   |\n| Team  | $50   |",
+      "stableBlockCount" : 1
+    }
+  ]
+}

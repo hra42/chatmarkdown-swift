@@ -1,0 +1,77 @@
+[
+  {
+    "inlines" : [
+      {
+        "kind" : "text",
+        "value" : "SwiftUI is Apple’s "
+      },
+      {
+        "children" : [
+          {
+            "kind" : "text",
+            "value" : "declarative"
+          }
+        ],
+        "kind" : "bold"
+      },
+      {
+        "kind" : "text",
+        "value" : " UI framework, introduced at WWDC 2019."
+      }
+    ],
+    "kind" : "paragraph"
+  },
+  {
+    "inlines" : [
+      {
+        "kind" : "text",
+        "value" : "It works by describing "
+      },
+      {
+        "children" : [
+          {
+            "kind" : "text",
+            "value" : "what"
+          }
+        ],
+        "kind" : "italic"
+      },
+      {
+        "kind" : "text",
+        "value" : " the UI should look like for a given state, rather than imperatively mutating views. Read more in the "
+      },
+      {
+        "children" : [
+          {
+            "kind" : "text",
+            "value" : "official docs"
+          }
+        ],
+        "kind" : "link",
+        "url" : "https:\/\/developer.apple.com\/swiftui"
+      },
+      {
+        "kind" : "text",
+        "value" : "."
+      }
+    ],
+    "kind" : "paragraph"
+  },
+  {
+    "inlines" : [
+      {
+        "kind" : "text",
+        "value" : "The core building block is the "
+      },
+      {
+        "kind" : "code",
+        "value" : "View"
+      },
+      {
+        "kind" : "text",
+        "value" : " protocol — every screen, every button, every label conforms to it."
+      }
+    ],
+    "kind" : "paragraph"
+  }
+]

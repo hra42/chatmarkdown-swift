@@ -1,0 +1,71 @@
+[
+  {
+    "inlines" : [
+      {
+        "kind" : "text",
+        "value" : "Heading 1"
+      }
+    ],
+    "kind" : "heading",
+    "level" : 1
+  },
+  {
+    "inlines" : [
+      {
+        "kind" : "text",
+        "value" : "Heading 2"
+      }
+    ],
+    "kind" : "heading",
+    "level" : 2
+  },
+  {
+    "inlines" : [
+      {
+        "kind" : "text",
+        "value" : "Heading 3"
+      }
+    ],
+    "kind" : "heading",
+    "level" : 3
+  },
+  {
+    "inlines" : [
+      {
+        "kind" : "text",
+        "value" : "Heading 4"
+      }
+    ],
+    "kind" : "heading",
+    "level" : 4
+  },
+  {
+    "inlines" : [
+      {
+        "kind" : "text",
+        "value" : "Heading 5"
+      }
+    ],
+    "kind" : "heading",
+    "level" : 5
+  },
+  {
+    "inlines" : [
+      {
+        "kind" : "text",
+        "value" : "Heading 6"
+      }
+    ],
+    "kind" : "heading",
+    "level" : 6
+  },
+  {
+    "inlines" : [
+      {
+        "kind" : "text",
+        "value" : "Body paragraph after the headings."
+      }
+    ],
+    "kind" : "paragraph"
+  }
+]

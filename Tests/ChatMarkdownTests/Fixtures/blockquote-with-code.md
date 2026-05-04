@@ -1,0 +1,1 @@
+> Heads up: starting with macOS 14, calling `NSWindow.makeKeyAndOrderFront(_:)` from a background thread will assert. See the [release notes](https://developer.apple.com/documentation/macos-release-notes) for the full list of behavior changes.

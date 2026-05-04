@@ -1,0 +1,33 @@
+[
+  {
+    "code" : "let theme = ChatMarkdownTheme.assistant\nChatMarkdownView(markdown).chatMarkdownTheme(theme)\n",
+    "isClosed" : true,
+    "kind" : "codeBlock",
+    "language" : "swift"
+  },
+  {
+    "inlines" : [
+      {
+        "kind" : "text",
+        "value" : "The "
+      },
+      {
+        "kind" : "code",
+        "value" : ".assistant"
+      },
+      {
+        "kind" : "text",
+        "value" : " preset uses the system body font and the accent color for links. For user-bubble messages, swap to "
+      },
+      {
+        "kind" : "code",
+        "value" : ".user"
+      },
+      {
+        "kind" : "text",
+        "value" : ", which inverts the foreground for higher contrast on a coloured background."
+      }
+    ],
+    "kind" : "paragraph"
+  }
+]

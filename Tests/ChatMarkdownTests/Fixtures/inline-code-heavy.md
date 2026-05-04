@@ -1,0 +1,1 @@
+Use `URLSession.shared.data(for:)` together with `try await` to perform an async network request. The result is a tuple of `(Data, URLResponse)`. Decode the body with `JSONDecoder().decode(MyType.self, from: data)`, and inspect `response` (cast to `HTTPURLResponse`) for the `statusCode`.

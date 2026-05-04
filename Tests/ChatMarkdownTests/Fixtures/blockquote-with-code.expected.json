@@ -1,0 +1,38 @@
+[
+  {
+    "blocks" : [
+      {
+        "inlines" : [
+          {
+            "kind" : "text",
+            "value" : "Heads up: starting with macOS 14, calling "
+          },
+          {
+            "kind" : "code",
+            "value" : "NSWindow.makeKeyAndOrderFront(_:)"
+          },
+          {
+            "kind" : "text",
+            "value" : " from a background thread will assert. See the "
+          },
+          {
+            "children" : [
+              {
+                "kind" : "text",
+                "value" : "release notes"
+              }
+            ],
+            "kind" : "link",
+            "url" : "https:\/\/developer.apple.com\/documentation\/macos-release-notes"
+          },
+          {
+            "kind" : "text",
+            "value" : " for the full list of behavior changes."
+          }
+        ],
+        "kind" : "paragraph"
+      }
+    ],
+    "kind" : "blockquote"
+  }
+]

@@ -97,3 +97,27 @@ The JSON shape is deliberately readable so future ports can decode and assert ag
 `stableBlockCount` is derived (longest common prefix vs. previous step's `blockIDs`); the regenerator (`REGEN_FIXTURES=1 swift test --filter FixtureGenerator`) recomputes it. Hand-edit only the `input` strings.
 
 Future ports validate by re-computing `BlockIDSequence` for each step's input and asserting equality with `blockIDs` plus prefix-stability vs. the previous step.
+
+## Edge cases
+
+The behaviors below are part of the contract. They are exercised by `EdgeCaseTests` and the matching fixtures.
+
+### Empty and whitespace-only input
+
+`ChatMarkdownDocument(markdown: "")` returns an empty `blocks` array — never throws, never crashes. Whitespace-only input (`"   \n   \n"`) likewise normalizes to an empty `blocks` array; no empty paragraph is emitted.
+
+### Tabs and `\r\n` / `\r` line endings
+
+The parser pipeline accepts tabs and any line-ending convention (`\n`, `\r\n`, bare `\r`) directly. Consumers do not need to pre-sanitize input. CommonMark's leading-tab semantics still apply (a leading tab can trigger indented-code interpretation), but no input combination crashes the pipeline.
+
+### Unsupported constructs are dropped silently
+
+Constructs from the [Unsupported / dropped](#unsupported--dropped) list never surface as errors. A document containing only `<div>hi</div>` produces an empty `blocks` array (or a non-error best-effort representation) — never a synthetic error block.
+
+### Hard line breaks within a paragraph
+
+A hard break (`\\\n` or two trailing spaces + `\n`) inside a paragraph is an inline `.lineBreak`, not a paragraph boundary. During streaming, appending a hard break to a paragraph keeps the paragraph as a single block whose `contentHash` changes; it does not split into two blocks (which would falsely look like a stable-prefix extension under the diff rule).
+
+### Unclosed bold / italic spans
+
+Per CommonMark, unmatched `**` / `*` / `__` / `_` delimiters are rendered as literal text — no synthetic close, no implicit emphasis. `chatmarkdown` does not deviate. This is invariant with the streaming model: the trailing block carries the literal `**` until the closing delimiter arrives, at which point the block re-parses with the emphasis span and gets a fresh `contentHash`.

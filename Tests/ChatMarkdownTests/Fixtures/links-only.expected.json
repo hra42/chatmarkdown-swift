@@ -1,0 +1,53 @@
+[
+  {
+    "inlines" : [
+      {
+        "kind" : "text",
+        "value" : "Useful links: "
+      },
+      {
+        "children" : [
+          {
+            "kind" : "text",
+            "value" : "Apple docs"
+          }
+        ],
+        "kind" : "link",
+        "url" : "https:\/\/developer.apple.com"
+      },
+      {
+        "kind" : "text",
+        "value" : ", "
+      },
+      {
+        "children" : [
+          {
+            "kind" : "text",
+            "value" : "Swift forums"
+          }
+        ],
+        "kind" : "link",
+        "url" : "https:\/\/forums.swift.org"
+      },
+      {
+        "kind" : "text",
+        "value" : ", "
+      },
+      {
+        "children" : [
+          {
+            "kind" : "text",
+            "value" : "WWDC videos"
+          }
+        ],
+        "kind" : "link",
+        "url" : "https:\/\/developer.apple.com\/videos"
+      },
+      {
+        "kind" : "text",
+        "value" : "."
+      }
+    ],
+    "kind" : "paragraph"
+  }
+]

@@ -1,0 +1,8 @@
+[
+  {
+    "code" : "{\n  \"name\": \"chatmarkdown-swift\",\n  \"version\": \"0.0.0\",\n  \"platforms\": [\"macOS\", \"iOS\", \"visionOS\"],\n  \"dependencies\": [\n    {\n      \"url\": \"https:\/\/github.com\/apple\/swift-markdown\",\n      \"from\": \"0.6.0\"\n    }\n  ]\n}\n",
+    "isClosed" : true,
+    "kind" : "codeBlock",
+    "language" : "json"
+  }
+]

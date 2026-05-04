@@ -1,0 +1,17 @@
+[
+  {
+    "inlines" : [
+      {
+        "kind" : "text",
+        "value" : "Here’s a small Python example:"
+      }
+    ],
+    "kind" : "paragraph"
+  },
+  {
+    "code" : "def greet(name: str) -> str:\n    \"\"\"Return a friendly greeting.\"\"\"\n    return f\"Hello, {name}!\"\n\nif __name__ == \"__main__\":\n    print(greet(\"world\"))\n",
+    "isClosed" : true,
+    "kind" : "codeBlock",
+    "language" : "python"
+  }
+]
