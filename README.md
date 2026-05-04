@@ -8,6 +8,8 @@ The supported syntax subset and streaming semantics are documented in [SPEC.md](
 
 Experimental. No semantic versioning, no release tags, no support promise. `main` is the contract. The library is extracted from a single consumer and evolves in lockstep with it.
 
+Rendered messages support seamless drag-selection across paragraphs, lists, blockquotes, and code blocks — the whole assistant message is one selection target. This is enabled by the default TextKit-backed renderer; see [Selecting & copying text](#selecting--copying-text) for the opt-out.
+
 ## Installation
 
 ```swift
@@ -67,6 +69,19 @@ struct PlainCodeBlockStyle: ChatMarkdownCodeBlockStyle {
 ChatMarkdownView(markdown)
     .chatMarkdownCodeBlockStyle(PlainCodeBlockStyle())
 ```
+
+### Selecting & copying text
+
+By default, `ChatMarkdownView` renders the entire message into a single `NSTextView` (macOS) or `UITextView` (iOS, visionOS) so users can drag-select across paragraphs, lists, blockquotes, **and code blocks** in one motion. No additional modifier is required.
+
+If you need the legacy per-block SwiftUI renderer (for example, for debugging or to interoperate with a custom selection model), opt out per-view:
+
+```swift
+ChatMarkdownView(markdown)
+    .chatMarkdownRenderer(.swiftUI)
+```
+
+On platforms without AppKit/UIKit (e.g. Linux), the SwiftUI renderer is used automatically regardless of the modifier.
 
 ### Parsing only
 
