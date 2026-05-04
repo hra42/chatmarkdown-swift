@@ -73,7 +73,8 @@ enum ChatMarkdownTextStorageBuilder {
             let inline = NSInlineBuilder.build(
                 inlines,
                 baseFont: font,
-                baseColor: PlatformColors.primary
+                baseColor: PlatformColors.primary,
+                inlineCodeFont: TextKitThemeAdapter.inlineCodeFont(for: theme)
             )
             let styled = NSMutableAttributedString(attributedString: inline)
             applyParagraphStyle(blockSpacing: theme.blockSpacing, indent: indent, theme: theme, to: styled)
@@ -85,7 +86,8 @@ enum ChatMarkdownTextStorageBuilder {
             let inline = NSInlineBuilder.build(
                 inlines,
                 baseFont: font,
-                baseColor: PlatformColors.primary
+                baseColor: PlatformColors.primary,
+                inlineCodeFont: TextKitThemeAdapter.inlineCodeFont(for: theme)
             )
             let styled = NSMutableAttributedString(attributedString: inline)
             applyParagraphStyle(blockSpacing: theme.blockSpacing, indent: indent, theme: theme, to: styled)
@@ -161,26 +163,21 @@ enum ChatMarkdownTextStorageBuilder {
                 rows: rows,
                 alignments: alignments
             )
-            let slot = makeAttachmentSlot(payload: payload, theme: theme, indent: indent)
+            // Single-character slot. Vertical space is reserved by the
+            // attached `ChatMarkdownTableAttachment` whose `attachmentBounds`
+            // measures the SwiftUI table at the actual container width.
+            let attachment = ChatMarkdownTableAttachment(
+                payload: payload,
+                theme: theme,
+                tableStyle: AnyChatMarkdownTableStyle(DefaultChatMarkdownTableStyle())
+            )
+            let slot = makeAttachmentSlot(
+                payload: payload,
+                theme: theme,
+                indent: indent,
+                attachment: attachment
+            )
             out.append(slot)
-
-            // Reserve vertical space for the SwiftUI table overlay by appending
-            // one newline per logical table row (header + each body row). The
-            // overlay manager covers this rect; underlying chars carry the
-            // same payload box so the manager can locate the full slot range.
-            let reservedRowCount = (headers.isEmpty ? 0 : 1) + rows.count
-            if reservedRowCount > 0 {
-                let box = ChatMarkdownAttachmentSlotBox(payload)
-                let filler = NSMutableAttributedString(
-                    string: String(repeating: "\n", count: reservedRowCount),
-                    attributes: [
-                        .chatMarkdownAttachmentSlot: box,
-                        .font: TextKitThemeAdapter.bodyFont(for: theme),
-                    ]
-                )
-                applyParagraphStyle(blockSpacing: 0, indent: indent, theme: theme, to: filler)
-                out.append(filler)
-            }
 
         case .horizontalRule:
             let rule = NSMutableAttributedString(
@@ -227,15 +224,20 @@ enum ChatMarkdownTextStorageBuilder {
     private static func makeAttachmentSlot(
         payload: ChatMarkdownAttachmentSlotPayload,
         theme: ChatMarkdownTheme,
-        indent: Int
+        indent: Int,
+        attachment: NSTextAttachment? = nil
     ) -> NSAttributedString {
         let box = ChatMarkdownAttachmentSlotBox(payload)
+        var attributes: [NSAttributedString.Key: Any] = [
+            .chatMarkdownAttachmentSlot: box,
+            .font: TextKitThemeAdapter.bodyFont(for: theme),
+        ]
+        if let attachment {
+            attributes[.attachment] = attachment
+        }
         let slot = NSMutableAttributedString(
             string: "\u{FFFC}",
-            attributes: [
-                .chatMarkdownAttachmentSlot: box,
-                .font: TextKitThemeAdapter.bodyFont(for: theme),
-            ]
+            attributes: attributes
         )
         applyParagraphStyle(blockSpacing: theme.blockSpacing, indent: indent, theme: theme, to: slot)
         return slot

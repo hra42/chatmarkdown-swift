@@ -7,7 +7,7 @@
     },
     {
       "kind" : "table",
-      "length" : 4,
+      "length" : 1,
       "location" : 60
     }
   ],
@@ -18,5 +18,5 @@
     "table",
     "paragraph"
   ],
-  "length" : 77
+  "length" : 74
 }

@@ -19,15 +19,25 @@ enum TextKitThemeAdapter {
     }
 
     static func bodyFont(for theme: ChatMarkdownTheme) -> PlatformFont {
-        PlatformFonts.body()
+        PlatformFontResolver.resolve(theme.bodyFont, fallback: PlatformFonts.body())
     }
 
     static func headingFont(level: Int, theme: ChatMarkdownTheme) -> PlatformFont {
-        PlatformFonts.heading(level: level)
+        let font = theme.headingFonts[level]
+            ?? theme.headingFonts[1]
+            ?? .system(size: 28, weight: .bold)
+        return PlatformFontResolver.resolve(font, fallback: PlatformFonts.heading(level: level))
     }
 
     static func codeFont(for theme: ChatMarkdownTheme) -> PlatformFont {
-        PlatformFonts.monospaced()
+        PlatformFontResolver.resolve(theme.codeFont, fallback: PlatformFonts.monospaced())
+    }
+
+    static func inlineCodeFont(for theme: ChatMarkdownTheme) -> PlatformFont {
+        PlatformFontResolver.resolve(
+            theme.inlineCodeFont,
+            fallback: PlatformFonts.monospaced(size: PlatformFonts.body().pointSize)
+        )
     }
 }
 

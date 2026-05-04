@@ -75,12 +75,18 @@ final class TextKitBuilderTests: XCTestCase {
         XCTAssertEqual(rows.count, 2)
         XCTAssertEqual(alignments.count, 3)
 
-        // Slot range must reserve one character per logical row (header + body
-        // rows) plus the leading attachment placeholder, so the overlay
-        // manager can give the SwiftUI table view enough vertical space.
-        let expectedReserved = 1 + (headers.isEmpty ? 0 : 1) + rows.count
-        XCTAssertEqual(slots[0].range.length, expectedReserved,
-                       "Table slot must cover \(expectedReserved) chars (slot + reserved newlines)")
+        // Single FFFC character. Vertical space is reserved by the
+        // ChatMarkdownTableAttachment's attachmentBounds(...) — see the
+        // overlay tests for the layout-time assertion.
+        XCTAssertEqual(slots[0].range.length, 1,
+                       "Table slot must be a single FFFC character; height comes from NSTextAttachment")
+
+        let attachment = attributed.attribute(.attachment, at: slots[0].range.location, effectiveRange: nil)
+        XCTAssertTrue(attachment is ChatMarkdownTableAttachment,
+                       "Table slot must carry a ChatMarkdownTableAttachment")
+        if let table = attachment as? ChatMarkdownTableAttachment {
+            XCTAssertEqual(table.payload, slots[0].payload)
+        }
     }
 
     // MARK: - Blockquote

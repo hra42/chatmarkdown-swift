@@ -12,7 +12,8 @@ enum NSInlineBuilder {
     static func build(
         _ inlines: [ChatMarkdownInline],
         baseFont: PlatformFont,
-        baseColor: PlatformColor
+        baseColor: PlatformColor,
+        inlineCodeFont: PlatformFont? = nil
     ) -> NSAttributedString {
         let out = NSMutableAttributedString()
         let attrs = Attrs(
@@ -21,7 +22,8 @@ enum NSInlineBuilder {
             isItalic: false,
             color: baseColor,
             isCode: false,
-            link: nil
+            link: nil,
+            inlineCodeFont: inlineCodeFont
         )
         for inline in inlines {
             append(inline, into: out, attrs: attrs)
@@ -61,7 +63,7 @@ enum NSInlineBuilder {
     private static func makePart(_ s: String, attrs: Attrs) -> NSAttributedString {
         var font: PlatformFont
         if attrs.isCode {
-            font = PlatformFonts.monospaced(size: attrs.font.pointSize)
+            font = attrs.inlineCodeFont ?? PlatformFonts.monospaced(size: attrs.font.pointSize)
         } else {
             font = attrs.font
         }
@@ -89,6 +91,7 @@ enum NSInlineBuilder {
         var color: PlatformColor
         var isCode: Bool
         var link: URL?
+        var inlineCodeFont: PlatformFont?
     }
 }
 

@@ -182,21 +182,31 @@ enum BlockToAttributed {
         let pad = String(repeating: " ", count: indent * 2)
         switch block {
         case .heading(let level, let inlines):
-            let font = PlatformFonts.heading(level: level)
+            let font = TextKitThemeAdapter.headingFont(level: level, theme: theme)
             if !pad.isEmpty {
                 out.append(NSAttributedString(string: pad, attributes: [.font: font]))
             }
-            out.append(NSInlineBuilder.build(inlines, baseFont: font, baseColor: PlatformColors.primary))
+            out.append(NSInlineBuilder.build(
+                inlines,
+                baseFont: font,
+                baseColor: PlatformColors.primary,
+                inlineCodeFont: TextKitThemeAdapter.inlineCodeFont(for: theme)
+            ))
 
         case .paragraph(let inlines):
-            let font = PlatformFonts.body()
+            let font = TextKitThemeAdapter.bodyFont(for: theme)
             if !pad.isEmpty {
                 out.append(NSAttributedString(string: pad, attributes: [.font: font]))
             }
-            out.append(NSInlineBuilder.build(inlines, baseFont: font, baseColor: PlatformColors.primary))
+            out.append(NSInlineBuilder.build(
+                inlines,
+                baseFont: font,
+                baseColor: PlatformColors.primary,
+                inlineCodeFont: TextKitThemeAdapter.inlineCodeFont(for: theme)
+            ))
 
         case .codeBlock(let language, let code, _):
-            let mono = PlatformFonts.monospaced()
+            let mono = TextKitThemeAdapter.codeFont(for: theme)
             if let lang = language, !lang.isEmpty {
                 let header = NSAttributedString(
                     string: pad + lang.lowercased() + "\n",
@@ -245,7 +255,7 @@ enum BlockToAttributed {
             }
 
         case .table(let headers, let rows, _):
-            appendNSTable(headers: headers, rows: rows, into: out, pad: pad)
+            appendNSTable(headers: headers, rows: rows, into: out, theme: theme, pad: pad)
 
         case .horizontalRule:
             out.append(NSAttributedString(
@@ -265,7 +275,7 @@ enum BlockToAttributed {
         let pad = String(repeating: " ", count: indent * 2)
         out.append(NSAttributedString(
             string: pad + marker,
-            attributes: [.font: PlatformFonts.body()]
+            attributes: [.font: TextKitThemeAdapter.bodyFont(for: theme)]
         ))
         for (i, sub) in item.enumerated() {
             appendNSBlock(sub, into: out, theme: theme, indent: indent + 1)
@@ -277,9 +287,10 @@ enum BlockToAttributed {
         headers: [[ChatMarkdownInline]],
         rows: [[[ChatMarkdownInline]]],
         into out: NSMutableAttributedString,
+        theme: ChatMarkdownTheme,
         pad: String
     ) {
-        let font = PlatformFonts.monospaced()
+        let font = TextKitThemeAdapter.codeFont(for: theme)
         let allRows: [[String]] = ([headers] + rows).map { row in
             row.map { plainText(of: $0) }
         }
