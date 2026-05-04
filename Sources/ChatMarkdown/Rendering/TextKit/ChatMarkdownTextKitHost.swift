@@ -9,6 +9,27 @@ import UIKit
 
 #if canImport(AppKit) || canImport(UIKit)
 
+// MARK: - Table attachment refresh
+
+/// After every `apply()`, walk the storage and inject the current
+/// `theme`/`tableStyle` into each `ChatMarkdownTableAttachment` so the
+/// attachment measures with the same SwiftUI tree the overlay paints.
+/// The width-keyed height cache stays valid across stable updates; width
+/// changes clear it via the host's layout hooks.
+@MainActor
+fileprivate func refreshTableAttachments(
+    in storage: NSTextStorage,
+    layoutManager: NSLayoutManager?,
+    theme: ChatMarkdownTheme,
+    tableStyle: AnyChatMarkdownTableStyle
+) {
+    storage.enumerateChatMarkdownTableAttachments { attachment, _ in
+        attachment.theme = theme
+        attachment.tableStyle = tableStyle
+    }
+    _ = layoutManager
+}
+
 // MARK: - macOS
 
 #if canImport(AppKit)
@@ -32,6 +53,8 @@ struct ChatMarkdownTextKitHost: NSViewRepresentable {
     }
 
     func makeNSView(context: Context) -> ChatMarkdownNSTextView {
+        // ChatMarkdownNSTextView's init(frame:) forces TextKit 1; see the
+        // convenience-init comment for why.
         let view = ChatMarkdownNSTextView(frame: .zero)
         view.isEditable = false
         view.isSelectable = true
@@ -85,6 +108,12 @@ struct ChatMarkdownTextKitHost: NSViewRepresentable {
                 previousBlockIDs: view.chatMarkdownBlockIDs,
                 previousBlockRanges: view.chatMarkdownBlockRanges
             )
+            refreshTableAttachments(
+                in: storage,
+                layoutManager: view.layoutManager,
+                theme: theme,
+                tableStyle: tableStyle
+            )
         }
         view.chatMarkdownBlockIDs = result.blockIDs
         view.chatMarkdownBlockRanges = result.blockRanges
@@ -96,12 +125,28 @@ struct ChatMarkdownTextKitHost: NSViewRepresentable {
 }
 
 final class ChatMarkdownNSTextView: NSTextView, ChatMarkdownPlatformTextViewProtocol {
+    private var lastLaidOutContainerWidth: CGFloat = -1
     var chatMarkdownTheme: ChatMarkdownTheme?
     var chatMarkdownCodeBlockStyle: AnyChatMarkdownCodeBlockStyle?
     var chatMarkdownTableStyle: AnyChatMarkdownTableStyle?
     var chatMarkdownBlockIDs: [BlockID] = []
     var chatMarkdownBlockRanges: [NSRange] = []
     let chatMarkdownOverlayManager = ChatMarkdownTextKitOverlayManager()
+
+    convenience override init(frame frameRect: NSRect) {
+        // Always force TextKit 1 — modern NSTextView defaults to TextKit 2,
+        // which silently disables `NSTextAttachment.attachmentBounds(...)`.
+        self.init(usingTextLayoutManager: false)
+        self.frame = frameRect
+    }
+
+    override init(frame frameRect: NSRect, textContainer: NSTextContainer?) {
+        super.init(frame: frameRect, textContainer: textContainer)
+    }
+
+    required init?(coder: NSCoder) {
+        super.init(coder: coder)
+    }
 
     override var intrinsicContentSize: NSSize {
         guard let layoutManager = layoutManager, let textContainer = textContainer else {
@@ -125,6 +170,21 @@ final class ChatMarkdownNSTextView: NSTextView, ChatMarkdownPlatformTextViewProt
         relayoutChatMarkdownOverlays()
     }
 
+    fileprivate func invalidateTableAttachmentsOnWidthChange() {
+        guard let layoutManager = layoutManager,
+              let textContainer = textContainer,
+              let storage = textStorage else { return }
+        let width = textContainer.size.width
+        guard width.isFinite, width > 0 else { return }
+        if abs(width - lastLaidOutContainerWidth) < 0.5 { return }
+        lastLaidOutContainerWidth = width
+        storage.enumerateChatMarkdownTableAttachments { attachment, range in
+            attachment.invalidateHeightCache()
+            layoutManager.invalidateLayout(forCharacterRange: range, actualCharacterRange: nil)
+        }
+        layoutManager.ensureLayout(for: textContainer)
+    }
+
     override func draw(_ dirtyRect: NSRect) {
         super.draw(dirtyRect)
         ChatMarkdownTextKitDrawing.drawAnnotations(in: self, theme: chatMarkdownTheme)
@@ -134,6 +194,7 @@ final class ChatMarkdownNSTextView: NSTextView, ChatMarkdownPlatformTextViewProt
         guard let theme = chatMarkdownTheme,
               let codeBlockStyle = chatMarkdownCodeBlockStyle,
               let tableStyle = chatMarkdownTableStyle else { return }
+        invalidateTableAttachmentsOnWidthChange()
         chatMarkdownOverlayManager.relayout(
             in: self,
             codeBlockStyle: codeBlockStyle,
@@ -179,6 +240,8 @@ struct ChatMarkdownTextKitHost: UIViewRepresentable {
     }
 
     func makeUIView(context: Context) -> ChatMarkdownUITextView {
+        // ChatMarkdownUITextView's init forces TextKit 1; see the
+        // convenience-init comment for why.
         let view = ChatMarkdownUITextView(frame: .zero, textContainer: nil)
         view.isEditable = false
         view.isSelectable = true
@@ -229,6 +292,12 @@ struct ChatMarkdownTextKitHost: UIViewRepresentable {
             previousBlockIDs: view.chatMarkdownBlockIDs,
             previousBlockRanges: view.chatMarkdownBlockRanges
         )
+        refreshTableAttachments(
+            in: view.textStorage,
+            layoutManager: view.layoutManager,
+            theme: theme,
+            tableStyle: tableStyle
+        )
         view.chatMarkdownBlockIDs = result.blockIDs
         view.chatMarkdownBlockRanges = result.blockRanges
         view.invalidateIntrinsicContentSize()
@@ -239,12 +308,23 @@ struct ChatMarkdownTextKitHost: UIViewRepresentable {
 }
 
 final class ChatMarkdownUITextView: UITextView, ChatMarkdownPlatformTextViewProtocol {
+    private var lastLaidOutContainerWidth: CGFloat = -1
     var chatMarkdownTheme: ChatMarkdownTheme?
     var chatMarkdownCodeBlockStyle: AnyChatMarkdownCodeBlockStyle?
     var chatMarkdownTableStyle: AnyChatMarkdownTableStyle?
     var chatMarkdownBlockIDs: [BlockID] = []
     var chatMarkdownBlockRanges: [NSRange] = []
     let chatMarkdownOverlayManager = ChatMarkdownTextKitOverlayManager()
+
+    convenience override init(frame: CGRect, textContainer: NSTextContainer?) {
+        // Force TextKit 1 — UITextView defaults to TextKit 2 in iOS 16+,
+        // which doesn't dispatch to `NSTextAttachment.attachmentBounds(...)`.
+        self.init(usingTextLayoutManager: false)
+        self.frame = frame
+        // textContainer arg is ignored intentionally; the TextKit 1 init
+        // creates its own.
+        _ = textContainer
+    }
 
     override var intrinsicContentSize: CGSize {
         let width = bounds.width > 0 ? bounds.width : UIView.noIntrinsicMetric
@@ -260,6 +340,21 @@ final class ChatMarkdownUITextView: UITextView, ChatMarkdownPlatformTextViewProt
         relayoutChatMarkdownOverlays()
     }
 
+    fileprivate func invalidateTableAttachmentsOnWidthChange() {
+        let layoutManager = self.layoutManager
+        let textContainer = self.textContainer
+        let storage = textStorage
+        let width = textContainer.size.width
+        guard width.isFinite, width > 0 else { return }
+        if abs(width - lastLaidOutContainerWidth) < 0.5 { return }
+        lastLaidOutContainerWidth = width
+        storage.enumerateChatMarkdownTableAttachments { attachment, range in
+            attachment.invalidateHeightCache()
+            layoutManager.invalidateLayout(forCharacterRange: range, actualCharacterRange: nil)
+        }
+        layoutManager.ensureLayout(for: textContainer)
+    }
+
     override func draw(_ rect: CGRect) {
         super.draw(rect)
         ChatMarkdownTextKitDrawing.drawAnnotations(in: self, theme: chatMarkdownTheme)
@@ -269,6 +364,7 @@ final class ChatMarkdownUITextView: UITextView, ChatMarkdownPlatformTextViewProt
         guard let theme = chatMarkdownTheme,
               let codeBlockStyle = chatMarkdownCodeBlockStyle,
               let tableStyle = chatMarkdownTableStyle else { return }
+        invalidateTableAttachmentsOnWidthChange()
         chatMarkdownOverlayManager.relayout(
             in: self,
             codeBlockStyle: codeBlockStyle,

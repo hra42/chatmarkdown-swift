@@ -21,8 +21,11 @@ enum ChatMarkdownOverlaySlotScanner {
     /// returned range covers ONLY the leading attachment character (`\u{FFFC}`)
     /// — the SwiftUI overlay sits over that one-character rect (which the
     /// layout manager places on its own line, since it has paragraph spacing).
-    /// For tables, the range covers the slot character plus all reserved
-    /// newlines so the overlay covers the full reserved height.
+    /// For tables, the range is also a single attachment character; vertical
+    /// space is reserved by `ChatMarkdownTableAttachment.attachmentBounds(...)`,
+    /// which measures the SwiftUI table at the available container width.
+    /// The coalescing branch is kept for defensive parity but is a no-op for
+    /// the current single-char layouts.
     static func scan(_ storage: NSAttributedString) -> [ChatMarkdownOverlaySlot] {
         var slots: [ChatMarkdownOverlaySlot] = []
         let full = NSRange(location: 0, length: storage.length)
@@ -232,12 +235,34 @@ final class ChatMarkdownTextKitOverlayManager {
         tableStyle: AnyChatMarkdownTableStyle,
         theme: ChatMarkdownTheme
     ) -> AnyView {
+        ChatMarkdownOverlayRoot.makeView(
+            payload: slot.payload,
+            codeBlockStyle: codeBlockStyle,
+            tableStyle: tableStyle,
+            theme: theme
+        )
+    }
+}
+
+// MARK: - Shared overlay root builder
+
+/// Builds the SwiftUI root view shown over a slot. Shared between the overlay
+/// manager (visible rendering) and `ChatMarkdownTableAttachment` (height
+/// measurement) so the measured height matches the painted height exactly.
+@MainActor
+enum ChatMarkdownOverlayRoot {
+    static func makeView(
+        payload: ChatMarkdownAttachmentSlotPayload,
+        codeBlockStyle: AnyChatMarkdownCodeBlockStyle,
+        tableStyle: AnyChatMarkdownTableStyle,
+        theme: ChatMarkdownTheme
+    ) -> AnyView {
         // codeBlockStyle is intentionally unused in this phase: a fully
         // user-supplied ChatMarkdownCodeBlockStyle would paint over the
         // selectable text. The TextKit renderer always uses the built-in
         // chrome-only view; user styles still apply on the SwiftUI renderer.
         _ = codeBlockStyle
-        switch slot.payload {
+        switch payload {
         case .codeBlock(let language, let code, _):
             return AnyView(
                 TextKitCodeBlockChromeView(language: language, code: code, theme: theme)
