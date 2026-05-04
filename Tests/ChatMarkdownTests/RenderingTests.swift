@@ -82,4 +82,44 @@ final class RenderingTests: XCTestCase {
                 .chatMarkdownCodeBlockStyle(PlainStyle())
         )
     }
+
+    func testTableRendersThroughImageRenderer() {
+        let md = """
+        | a | b |
+        | - | - |
+        | 1 | 2 |
+        | 3 | 4 |
+        """
+        let view = ChatMarkdownView(md)
+            .chatMarkdownRenderer(.swiftUI)
+            .frame(width: 400)
+        let renderer = ImageRenderer(content: view)
+        guard let cgImage = renderer.cgImage else {
+            XCTFail("ImageRenderer produced no image for a table")
+            return
+        }
+        XCTAssertGreaterThan(cgImage.height, 80,
+            "Table block should contribute non-trivial height when rendered via ImageRenderer")
+        XCTAssertGreaterThan(cgImage.width, 0)
+    }
+
+    func testCodeBlockRendersThroughImageRenderer() {
+        let md = """
+        ```swift
+        let x = 1
+        let y = 2
+        let z = 3
+        ```
+        """
+        let view = ChatMarkdownView(md)
+            .chatMarkdownRenderer(.swiftUI)
+            .frame(width: 400)
+        let renderer = ImageRenderer(content: view)
+        guard let cgImage = renderer.cgImage else {
+            XCTFail("ImageRenderer produced no image for a code block")
+            return
+        }
+        XCTAssertGreaterThan(cgImage.height, 60,
+            "Code block should contribute non-trivial height when rendered via ImageRenderer")
+    }
 }

@@ -54,19 +54,17 @@ private struct DefaultCodeBlockBody: View {
     }
 
     private var codeBody: some View {
-        ScrollView(.horizontal, showsIndicators: false) {
-            HStack(alignment: .bottom, spacing: 0) {
-                applySelection(Text(highlighted.characters.isEmpty ? AttributedString(configuration.code) : highlighted))
+        HStack(alignment: .bottom, spacing: 0) {
+            applySelection(Text(highlighted.characters.isEmpty ? AttributedString(configuration.code) : highlighted))
+                .font(theme.codeFont)
+                .frame(maxWidth: .infinity, alignment: .leading)
+            if !configuration.isClosed {
+                StreamingCaret()
                     .font(theme.codeFont)
-                    .frame(minWidth: 0, alignment: .leading)
-                if !configuration.isClosed {
-                    StreamingCaret()
-                        .font(theme.codeFont)
-                        .foregroundStyle(theme.secondaryTextColor)
-                }
+                    .foregroundStyle(theme.secondaryTextColor)
             }
-            .padding(12)
         }
+        .padding(12)
     }
 
     @ViewBuilder

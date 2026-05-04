@@ -35,24 +35,22 @@ private struct DefaultTableBody: View {
     }
 
     var body: some View {
-        ScrollView(.horizontal, showsIndicators: false) {
-            VStack(alignment: .leading, spacing: 0) {
-                headerRow
+        VStack(alignment: .leading, spacing: 0) {
+            headerRow
+            Rectangle()
+                .fill(theme.tableBorderColor)
+                .frame(height: 1)
+            ForEach(Array(configuration.rows.enumerated()), id: \.offset) { _, row in
+                bodyRow(row)
                 Rectangle()
-                    .fill(theme.tableBorderColor)
+                    .fill(theme.tableBorderColor.opacity(0.4))
                     .frame(height: 1)
-                ForEach(Array(configuration.rows.enumerated()), id: \.offset) { _, row in
-                    bodyRow(row)
-                    Rectangle()
-                        .fill(theme.tableBorderColor.opacity(0.4))
-                        .frame(height: 1)
-                }
             }
-            .overlay(
-                RoundedRectangle(cornerRadius: 4)
-                    .stroke(theme.tableBorderColor, lineWidth: 1)
-            )
         }
+        .overlay(
+            RoundedRectangle(cornerRadius: 4)
+                .stroke(theme.tableBorderColor, lineWidth: 1)
+        )
     }
 
     private var headerRow: some View {
